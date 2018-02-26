@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author quique
+ * @author david
  */
 public class Cajero {
 
