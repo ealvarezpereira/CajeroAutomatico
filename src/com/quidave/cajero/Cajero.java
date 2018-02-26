@@ -6,8 +6,10 @@
 package com.quidave.cajero;
 
 import com.quique.cajero.Clientes;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,10 +36,42 @@ public class Cajero {
          * @param saldo Saldo de su cuenta
          */
         String usu = JOptionPane.showInputDialog("Usuario");
-        String ctra = JOptionPane.showInputDialog("Contraseña");
-        String nom = JOptionPane.showInputDialog("Nombre");  
-        float saldo = Float.parseFloat(JOptionPane.showInputDialog("Saldo de la cuenta"));
 
+        //Mientras que el usuario sea un nulo o un valor en blanco que no te deje meterlo.
+        while (usu.equals("") || usu == null) {
+            usu = JOptionPane.showInputDialog("Usuario inválido.");
+        }
+
+        try {
+
+            fich = new File("cajero.txt");
+            BufferedReader leer = new BufferedReader(new FileReader("cajero.txt"));
+            String line = "";
+
+            while ((line = leer.readLine()) != null) {
+
+                //El indexOf si no encuentra el valor que le metes devuelve un -1, por eso la comparacion
+                //Si la busqueda es distinto de -1
+                if (line.indexOf(usu) != -1) {
+                    usu = JOptionPane.showInputDialog("Usuario existente.");
+                }
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error. No se ha encontrado. " + ex);
+        } catch (IOException ex) {
+            System.out.println("Error. " + ex);
+        }
+
+        String ctra = JOptionPane.showInputDialog("Contraseña");
+
+        while (ctra.equals("") || ctra == null) {
+            ctra = JOptionPane.showInputDialog("Contraseña inválida.");
+
+        }
+
+        String nom = JOptionPane.showInputDialog("Nombre");
+        float saldo = Float.parseFloat(JOptionPane.showInputDialog("Saldo de la cuenta"));
 
         try {
             /**
