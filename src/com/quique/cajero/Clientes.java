@@ -20,7 +20,7 @@ public class Clientes {
     public Clientes() {
     }
 
-    public Clientes(String nombre, String usuario, String contraseña, float saldo) {
+    public Clientes(String usuario, String contraseña, String nombre, float saldo) {
         this.nombre = nombre;
         this.usuario = usuario;
         this.contraseña = contraseña;
