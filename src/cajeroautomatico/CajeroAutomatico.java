@@ -5,6 +5,8 @@
  */
 package cajeroautomatico;
 
+import com.quique.cajero.Display;
+
 /**
  *
  * @author quique
@@ -15,7 +17,12 @@ public class CajeroAutomatico {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        
+        Display dis = new Display();
+        
+        dis.setVisible(true);
+        
     }
     
 }
