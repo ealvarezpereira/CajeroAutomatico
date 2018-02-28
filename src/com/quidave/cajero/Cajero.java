@@ -6,6 +6,7 @@
 package com.quidave.cajero;
 
 import com.quique.cajero.Clientes;
+import com.quique.cajero.Display;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,6 +49,7 @@ public class Cajero {
                     valido = true;
 //                    String[] lista = line.split("\\s*,\\s*");
 //                    JOptionPane.showMessageDialog(null, lista[2]);
+                        JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!");
                     break;
                 }
             }
@@ -55,7 +57,7 @@ public class Cajero {
             //Si no ha entrado en el if es que no existe el usuario
             if (valido == false) {
                 JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
-
+                Display.txtCtra.setText(null);
             }
 
             reader.close();
