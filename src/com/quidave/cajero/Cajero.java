@@ -23,9 +23,51 @@ import javax.swing.JOptionPane;
 public class Cajero {
 
     File fich;
+    private String line = "";
+    private boolean valido = false;
     private PrintWriter escribir;
     private Clientes cliente;
-    private String line;
+
+    public String validarUsuario(String usuario, String ctra) {
+
+        File fich = new File("cajero.txt");
+
+        try {
+            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+
+            //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
+            //leer la linea) sea distinto de null te haga el if
+            while ((line = reader.readLine()) != null) {
+                valido = false;
+
+                //El indexOf si no encuentra el valor que le metes devuelve un -1, por eso la comparacion
+                //Si la busqueda es distinto de -1
+                if (line.indexOf(usuario) != -1 && line.indexOf(ctra) != -1) {
+
+                    //La marca valido es para que si encuentra un usuario salte la marca
+                    valido = true;
+//                    String[] lista = line.split("\\s*,\\s*");
+//                    JOptionPane.showMessageDialog(null, lista[2]);
+                    break;
+                }
+            }
+
+            //Si no ha entrado en el if es que no existe el usuario
+            if (valido == false) {
+                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
+
+            }
+
+            reader.close();
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error " + ex);
+        } catch (IOException ex) {
+            System.out.println("Error " + ex);
+        }
+
+        return usuario;
+    }
 
     public void registrarUsuario() {
         /**
