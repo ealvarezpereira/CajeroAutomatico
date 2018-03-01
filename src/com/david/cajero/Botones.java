@@ -25,7 +25,7 @@ public class Botones implements ActionListener{
  
     public Botones (){//constructor de la clase
  
-        JFrame obxFrame=new JFrame("Arreglo de Botones");
+        JFrame obxFrame=new JFrame("Cajero Automático");
         obxFrame.setLayout(new BorderLayout(60, 20));
  
 //        jLabel1=new JLabel(); //Creo el jLabel que muestra el número pulsado
