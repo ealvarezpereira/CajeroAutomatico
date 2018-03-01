@@ -181,4 +181,71 @@ public class Cajero {
         });
 
     }
+    
+    File fich2;
+    int m;
+    public void ingresarDinero(){
+        fich = new File("cajero.txt");
+        fich2 = new File("cajero2.txt");
+        
+        try {
+            Display obxDisplay=new Display();
+            //Aqui pedimos el titulo del libro
+            String usuario=obxDisplay.getUsuario();
+
+            float introducirPrecio=Float.parseFloat(JOptionPane.showInputDialog("Introduce el nuevo precio"));
+            
+            //Creamos un buffer del fichero para leer datos
+            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+
+            escribir = new PrintWriter(new FileWriter(fich2, true));
+            //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
+            //leer la linea) sea distinto de null te haga el if
+            while ((line = reader.readLine()) != null) {
+                m = 0;
+                String salvadas = line;
+
+                if (salvadas.contains(usuario) != true) {
+                    escribir.println(salvadas);
+                }else{
+                
+                    //Separamos la linea por comas
+                    String[] sep = salvadas.split("\\s*,\\s*");
+                    
+                    //Añadimos el precio a un string
+                    String precio = sep[3];
+                    
+                    //Separamos la palabra precio del precio en si
+                    String[] precioseparado = precio.split("\\s*:\\s*");
+                    //A la posicion del precio en si le damos el valor del precio que introducimos
+                    precioseparado[1] = String.valueOf(introducirPrecio);
+                    //A la linea le añadimos la cadena entera
+                    salvadas = sep[0]+", "+sep[1]+", "+precioseparado[0]+": "+precioseparado[1];
+                    escribir.println(salvadas);
+                    salvadas = "";
+                    precio ="";
+                }
+            }
+
+            reader.close();
+            escribir.close();
+            fich.delete();
+            //Renombramos el fichero
+            boolean correcto = fich2.renameTo(fich);
+
+            if (correcto) {
+                System.out.println("Fichero renombrado.");
+
+            } else {
+                System.out.println("fichero no renombrado");
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error " + ex);
+        } catch (IOException ex) {
+            System.out.println("Error " + ex);
+        }
+
+    }
+
 }
