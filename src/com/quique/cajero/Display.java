@@ -24,6 +24,8 @@ import javax.swing.JTextField;
  */
 public class Display extends JFrame implements ActionListener {
 
+    private String usuario, ctra;
+
     Cajero caj = new Cajero();
 
     public JButton btnIniciar = new JButton("Iniciar sesion");
@@ -34,7 +36,7 @@ public class Display extends JFrame implements ActionListener {
     public JLabel lblCtra = new JLabel("Contraseña : ");
 
     public JTextField txtUsuario = new JTextField(20);
-    public JPasswordField txtCtra = new JPasswordField(20);
+    public static JPasswordField txtCtra = new JPasswordField(20);
 
     public JPanel pnlMiPanel = new JPanel();
 
@@ -76,14 +78,12 @@ public class Display extends JFrame implements ActionListener {
 
         if (AE.getSource() == this.btnIniciar) {
             try {
-                String usuario, ctra;
-
                 usuario = this.txtUsuario.getText();
                 ctra = this.txtCtra.getText();
                 caj.validarUsuario(usuario, ctra);
 
             } catch (Exception E) {
-                JOptionPane.showMessageDialog(null, "ERROR VUELVA A INGRESAR LOS DATOS");
+                JOptionPane.showMessageDialog(null, "ERROR, VUELVA A INGRESAR LOS DATOS");
                 this.txtUsuario.setText("");
                 this.txtCtra.setText("");
             }
@@ -97,4 +97,7 @@ public class Display extends JFrame implements ActionListener {
         }
     }
 
+    public String getUsuario() {
+        return usuario;
+    }
 }
