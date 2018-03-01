@@ -5,6 +5,7 @@
  */
 package com.quidave.cajero;
 
+import com.david.cajero.Bototones;
 import com.quique.cajero.Clientes;
 import com.quique.cajero.Display;
 import java.io.BufferedReader;
@@ -49,7 +50,11 @@ public class Cajero {
                     valido = true;
 //                    String[] lista = line.split("\\s*,\\s*");
 //                    JOptionPane.showMessageDialog(null, lista[2]);
-                        JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!");
+                    JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!");
+                    Display dis = new Display();
+                    dis.setVisible(false);
+                    cuerpoDelCajero();
+
                     break;
                 }
             }
@@ -73,7 +78,7 @@ public class Cajero {
 
     public void registrarUsuario() {
         /**
-         * Estos JOptionPane son para darle valores al constructor de Libro
+         * Estos JOptionPane son para darle valores al constructor de Clientes
          *
          * @param usu Usuario del cliente
          * @param ctra Contraseña de su cuenta
@@ -116,7 +121,7 @@ public class Cajero {
         }
 
         String nom = JOptionPane.showInputDialog("Nombre");
-        float saldo = Float.parseFloat(JOptionPane.showInputDialog("Saldo de la cuenta"));
+        float saldo = 0f;
 
         try {
             /**
@@ -145,6 +150,35 @@ public class Cajero {
         } finally {
             escribir.close();
         }
+
+    }
+
+    public void cuerpoDelCajero() {
+
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Bototones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Bototones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Bototones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Bototones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Bototones().setVisible(true);
+            }
+        });
 
     }
 }
