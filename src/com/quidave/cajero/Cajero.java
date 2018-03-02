@@ -5,7 +5,7 @@
  */
 package com.quidave.cajero;
 
-import com.david.cajero.Bototones;
+import com.david.cajero.ElegirOpcion;
 import com.quique.cajero.Clientes;
 import com.quique.cajero.Display;
 import java.io.BufferedReader;
@@ -30,49 +30,58 @@ public class Cajero {
     private PrintWriter escribir;
     private Clientes cliente;
 
+    //Getter para que en el display no cierre la ventana al introducir un usuario incorrecto
+    public boolean isValido() {
+        return valido;
+    }
+
     public String validarUsuario(String usuario, String ctra) {
 
         File fich = new File("cajero.txt");
 
-        try {
-            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+        //Si el usuario o la contraseña son valores en blanco o nulos que no permita continuar
+        if (usuario == "" && usuario.contains(null) || ctra == "" && ctra.contains(null)) {
+            JOptionPane.showMessageDialog(null, "No puedes meter valores en blanco.");
+            Display.txtCtra.setText(null);
+        } else {
 
-            //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
-            //leer la linea) sea distinto de null te haga el if
-            while ((line = reader.readLine()) != null) {
-                valido = false;
+            try {
+                final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
 
-                //El indexOf si no encuentra el valor que le metes devuelve un -1, por eso la comparacion
-                //Si la busqueda es distinto de -1
-                if (line.indexOf(usuario) != -1 && line.indexOf(ctra) != -1) {
+                //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
+                //leer la linea) sea distinto de null te haga el if
+                while ((line = reader.readLine()) != null) {
+                    valido = false;
 
-                    //La marca valido es para que si encuentra un usuario salte la marca
-                    valido = true;
-//                    String[] lista = line.split("\\s*,\\s*");
-//                    JOptionPane.showMessageDialog(null, lista[2]);
-                    JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!");
-                    Display dis = new Display();
-                    dis.setVisible(false);
-                    cuerpoDelCajero();
+                    //El indexOf si no encuentra el valor que le metes devuelve un -1, por eso la comparacion
+                    //Si la busqueda es distinto de -1
+                    if (line.indexOf(usuario) != -1 && line.indexOf(ctra) != -1) {
 
-                    break;
+                        //La marca valido es para que si encuentra un usuario salte la marca
+                        valido = true;
+                        JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!");
+                        Display dis = new Display();
+                        cuerpoDelCajero();
+
+                        break;
+                    }
                 }
+
+                //Si no ha entrado en el if es que no existe el usuario
+                if (valido == false) {
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
+                    //Con esto borramos el contenido del campo contraseña
+                    Display.txtCtra.setText(null);
+                }
+
+                reader.close();
+
+            } catch (FileNotFoundException ex) {
+                System.out.println("Error " + ex);
+            } catch (IOException ex) {
+                System.out.println("Error " + ex);
             }
-
-            //Si no ha entrado en el if es que no existe el usuario
-            if (valido == false) {
-                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
-                Display.txtCtra.setText(null);
-            }
-
-            reader.close();
-
-        } catch (FileNotFoundException ex) {
-            System.out.println("Error " + ex);
-        } catch (IOException ex) {
-            System.out.println("Error " + ex);
         }
-
         return usuario;
     }
 
@@ -155,6 +164,7 @@ public class Cajero {
 
     public void cuerpoDelCajero() {
 
+        //Este try-catch es para la interfaz de las ventanas.
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -163,38 +173,39 @@ public class Cajero {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Bototones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Bototones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Bototones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Bototones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
+        //Aqui es la llamada la interfaz grafica de las opciones
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Bototones().setVisible(true);
+                new ElegirOpcion().setVisible(true);
             }
         });
 
     }
-    
+
     File fich2;
     int m;
-    public void ingresarDinero(){
+
+    public void ingresarDinero(String completo) {
         fich = new File("cajero.txt");
         fich2 = new File("cajero2.txt");
-        
-        try {
-            Display obxDisplay=new Display();
-            //Aqui pedimos el titulo del libro
-            String usuario=obxDisplay.getUsuario();
 
-            float introducirPrecio=Float.parseFloat(JOptionPane.showInputDialog("Introduce el nuevo precio"));
-            
+        try {
+            Display obxDisplay = new Display();
+            //Aqui pedimos el usuario
+            String usuario = obxDisplay.getUsuario();
+
+            //En la variable credito parseamos el dinero que introducimos en la interfaz introducir dinero
+            int credito = Integer.parseInt(completo);
+
             //Creamos un buffer del fichero para leer datos
             final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
 
@@ -207,23 +218,30 @@ public class Cajero {
 
                 if (salvadas.contains(usuario) != true) {
                     escribir.println(salvadas);
-                }else{
-                
+                } else {
+
                     //Separamos la linea por comas
                     String[] sep = salvadas.split("\\s*,\\s*");
-                    
+
                     //Añadimos el precio a un string
                     String precio = sep[3];
-                    
+
                     //Separamos la palabra precio del precio en si
                     String[] precioseparado = precio.split("\\s*:\\s*");
                     //A la posicion del precio en si le damos el valor del precio que introducimos
-                    precioseparado[1] = String.valueOf(introducirPrecio);
+
+                    ElegirOpcion opc = new ElegirOpcion();
+
+                    //A la variable dinero le sumamos el dinero que sacamos del fichero junto con el dinero que introducimos
+                    int dinero = Integer.parseInt(precioseparado[1]) + credito;
+
+                    precioseparado[1] = String.valueOf(dinero);
+
                     //A la linea le añadimos la cadena entera
-                    salvadas = sep[0]+", "+sep[1]+", "+precioseparado[0]+": "+precioseparado[1];
+                    salvadas = sep[0] + ", " + sep[1] + ", " + sep[2] + ", " + precioseparado[0] + ": " + precioseparado[1];
                     escribir.println(salvadas);
                     salvadas = "";
-                    precio ="";
+                    precio = "";
                 }
             }
 
@@ -248,4 +266,86 @@ public class Cajero {
 
     }
 
+    public void quitarDinero(String completo) {
+        fich = new File("cajero.txt");
+        fich2 = new File("cajero2.txt");
+
+        try {
+            Display obxDisplay = new Display();
+            //Aqui pedimos el usuario
+            String usuario = obxDisplay.getUsuario();
+
+            //En la variable credito parseamos el dinero que introducimos en la interfaz retirar dinero
+            int credito = Integer.parseInt(completo);
+
+            //Creamos un buffer del fichero para leer datos
+            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+
+            escribir = new PrintWriter(new FileWriter(fich2, true));
+            //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
+            //leer la linea) sea distinto de null te haga el if
+            while ((line = reader.readLine()) != null) {
+                m = 0;
+                String salvadas = line;
+
+                if (salvadas.contains(usuario) != true) {
+                    escribir.println(salvadas);
+                } else {
+
+                    //Separamos la linea por comas
+                    String[] sep = salvadas.split("\\s*,\\s*");
+
+                    //Añadimos el precio a un string
+                    String saldo = sep[3];
+
+                    //Separamos la palabra saldo del dinero en si
+                    String[] dineroSeparado = saldo.split("\\s*:\\s*");
+                    //A la posicion del dinero en si le damos el valor del dinero que introducimos
+
+                    ElegirOpcion opc = new ElegirOpcion();
+
+                    //Si tienes menos saldo en el banco que la cantidad que introduces, que vuelva a introducir la linea
+                    //sin hacer nada.
+                    
+                    if (Integer.parseInt(dineroSeparado[1]) < credito) {
+                        
+                        //A la linea le añadimos la cadena entera
+                        salvadas = sep[0] + ", " + sep[1] + ", " + sep[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                        escribir.println(salvadas);
+                        salvadas = "";
+                        saldo = "";
+                        JOptionPane.showMessageDialog(null, "Saldo insuficiente en la cuenta.");
+
+                    } else {
+                        int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
+                        dineroSeparado[1] = String.valueOf(dinero);
+
+                        //A la linea le añadimos la cadena entera
+                        salvadas = sep[0] + ", " + sep[1] + ", " + sep[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                        escribir.println(salvadas);
+                        salvadas = "";
+                        saldo = "";
+                    }
+                }
+            }
+
+            reader.close();
+            escribir.close();
+            fich.delete();
+            //Renombramos el fichero
+            boolean correcto = fich2.renameTo(fich);
+
+            if (correcto) {
+                System.out.println("Fichero renombrado.");
+
+            } else {
+                System.out.println("fichero no renombrado");
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error " + ex);
+        } catch (IOException ex) {
+            System.out.println("Error " + ex);
+        }
+    }
 }
