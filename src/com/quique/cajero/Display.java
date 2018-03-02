@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -24,20 +23,24 @@ import javax.swing.JTextField;
  */
 public class Display extends JFrame implements ActionListener {
 
-    private String usuario, ctra;
+    private static String usuario, ctra;
 
     Cajero caj = new Cajero();
 
+    //Botones de iniciar sesion, registrar usuario y salir.
     public JButton btnIniciar = new JButton("Iniciar sesion");
     public JButton btnRegistro = new JButton("Registrarse");
     public JButton btnSalir = new JButton("Salir");
 
+    //Texto de usuario y contraseña
     public JLabel lblUsuario = new JLabel("Usuario : ");
     public JLabel lblCtra = new JLabel("Contraseña : ");
 
+    //Cuadro de texto del usuario y cuadro de texto contraseña de la contraseña
     public JTextField txtUsuario = new JTextField(20);
     public static JPasswordField txtCtra = new JPasswordField(20);
 
+    //Panel que engloba todo
     public JPanel pnlMiPanel = new JPanel();
 
     public Display() {
@@ -77,16 +80,19 @@ public class Display extends JFrame implements ActionListener {
         //-- CON "getSource()" VEMOS EN QUE BOTON SE HIZO CLICK
 
         if (AE.getSource() == this.btnIniciar) {
-            try {
-                usuario = this.txtUsuario.getText();
-                ctra = this.txtCtra.getText();
-                caj.validarUsuario(usuario, ctra);
+            //A las variables usuario y contraseña se les dan los valores que se 
+            //introdujeron en los cuadros de texto.
+            usuario = this.txtUsuario.getText();
+            ctra = this.txtCtra.getText();
 
-            } catch (Exception E) {
-                JOptionPane.showMessageDialog(null, "ERROR, VUELVA A INGRESAR LOS DATOS");
-                this.txtUsuario.setText("");
-                this.txtCtra.setText("");
+            //Llamada al metodo que valida que el usuario esté registrado en el fichero
+            caj.validarUsuario(usuario, ctra);
+
+            //Si el usuario es valido que cierre la pestaña de iniciar sesion
+            if (caj.isValido() == true) {
+                setVisible(false);
             }
+
         } else if (AE.getSource() == this.btnRegistro) {
 
             //Si la accion es del boton registro que vaya al metodo registrar usuario.
@@ -97,6 +103,8 @@ public class Display extends JFrame implements ActionListener {
         }
     }
 
+    //Getter de usuario para la clase cajero.
+    
     public String getUsuario() {
         return usuario;
     }
