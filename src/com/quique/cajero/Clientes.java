@@ -15,12 +15,12 @@ public class Clientes {
     private String nombre;
     private String usuario;
     private String contraseña;
-    private float saldo;
+    private int saldo;
 
     public Clientes() {
     }
 
-    public Clientes(String usuario, String contraseña, String nombre, float saldo) {
+    public Clientes(String usuario, String contraseña, String nombre, int saldo) {
         this.nombre = nombre;
         this.usuario = usuario;
         this.contraseña = contraseña;
@@ -55,7 +55,7 @@ public class Clientes {
         return saldo;
     }
 
-    public void setSaldo(float saldo) {
+    public void setSaldo(int saldo) {
         this.saldo = saldo;
     }
 
