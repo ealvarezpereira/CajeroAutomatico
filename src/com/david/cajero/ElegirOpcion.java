@@ -5,6 +5,7 @@
  */
 package com.david.cajero;
 
+import com.quique.cajero.Display;
 import javax.swing.JComboBox;
 /**
  *
@@ -89,13 +90,13 @@ public class ElegirOpcion extends javax.swing.JFrame {
         });
 
         cancelar.setText("Cancelar");
-
-        Opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Introducir dinero", "Sacar dinero", "Darse de baja", "Transferencia bancaria" }));
-        Opciones.addActionListener(new java.awt.event.ActionListener() {
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OpcionesActionPerformed(evt);
+                cancelarActionPerformed(evt);
             }
         });
+
+        Opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Introducir dinero", "Sacar dinero", "Darse de baja", "Transferencia bancaria" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,10 +133,9 @@ public class ElegirOpcion extends javax.swing.JFrame {
 
     }//GEN-LAST:event_aceptarActionPerformed
 
-    private void OpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpcionesActionPerformed
-
-
-    }//GEN-LAST:event_OpcionesActionPerformed
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
+        cancelar();
+    }//GEN-LAST:event_cancelarActionPerformed
 
     public void botonesActionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -164,14 +164,12 @@ public class ElegirOpcion extends javax.swing.JFrame {
     private java.awt.MenuBar menuBar5;
     // End of variables declaration//GEN-END:variables
 
-    Object pene;
     public JComboBox<String> jopcion;
 
-    private void aceptar() {
+    public void aceptar() {
 
         jopcion = this.Opciones;
 
-        pene = jopcion.getSelectedItem();
 
         if (jopcion.getSelectedIndex() == 0) {
             IntroducirDinero bot = new IntroducirDinero();
@@ -184,6 +182,16 @@ public class ElegirOpcion extends javax.swing.JFrame {
             quit.setVisible(true);
             setVisible(false);
         }
+
+    }
+
+    private void cancelar() {
+
+        setVisible(false);
+        
+        Display dis = new Display();
+        dis.setVisible(true);
+
 
     }
 }
