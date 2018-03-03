@@ -438,5 +438,9 @@ public class QuitarDinero extends javax.swing.JFrame {
 
         caj.quitarDinero(completo);
 
+        setVisible(false);
+
+        ElegirOpcion opc = new ElegirOpcion();
+        opc.setVisible(true);
     }
 }
