@@ -130,7 +130,7 @@ public class Cajero {
         }
 
         String nom = JOptionPane.showInputDialog("Nombre");
-        float saldo = 0f;
+        int saldo = 0;
 
         try {
             /**
@@ -233,7 +233,7 @@ public class Cajero {
                     ElegirOpcion opc = new ElegirOpcion();
 
                     //A la variable dinero le sumamos el dinero que sacamos del fichero junto con el dinero que introducimos
-                    int dinero = Integer.parseInt(precioseparado[1]) + credito;
+                    int dinero = Integer.parseInt(precioseparado[1])+credito;
 
                     precioseparado[1] = String.valueOf(dinero);
 
