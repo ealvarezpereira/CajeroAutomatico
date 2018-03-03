@@ -6,6 +6,7 @@
 package com.david.cajero;
 
 import com.quidave.cajero.Cajero;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 
 /**
  *
@@ -185,11 +186,6 @@ public class IntroducirDinero extends javax.swing.JFrame {
         });
 
         cuerpotexto.setEditable(false);
-        cuerpotexto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cuerpotextoActionPerformed(evt);
-            }
-        });
 
         bo0.setText("0");
         bo0.addActionListener(new java.awt.event.ActionListener() {
@@ -322,10 +318,6 @@ public class IntroducirDinero extends javax.swing.JFrame {
         bo0();
     }//GEN-LAST:event_bo0ActionPerformed
 
-    private void cuerpotextoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cuerpotextoActionPerformed
-        cuerpo();
-    }//GEN-LAST:event_cuerpotextoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;
@@ -447,12 +439,10 @@ public class IntroducirDinero extends javax.swing.JFrame {
 
         caj.ingresarDinero(completo);
 
-    }
-
-    public void cuerpo() {
-        cuerpotexto.setEditable(false);
-        cuerpotexto.setEnabled(false);
-
+        setVisible(false);
+        
+        ElegirOpcion opc = new ElegirOpcion();
+        opc.setVisible(true);
     }
 
 }
