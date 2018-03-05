@@ -13,7 +13,7 @@ public class ValorBilletes {
     }
     
     //Excepcion que solo permita retirar a partir de 10€.
-    public static void dineroRetirar() throws ExcepcionPropia{
+    public static void dineroRetirar(int saldo) throws ExcepcionPropia{
         int[]billetes={10,20,50,100,500};
         int cantidadRetirar=Integer.parseInt(JOptionPane.showInputDialog("Introducir cantidad que desea retirar: "));
         for(int i=0;i<billetes.length;i++){
@@ -24,7 +24,7 @@ public class ValorBilletes {
     }
     
     //Excepcion que solo permita ingresar billetes de 5,10,20,50,100 y 500.
-    public static void dineroIngresar() throws ExcepcionPropia{
+    public static void dineroIngresar(int cantIngresar) throws ExcepcionPropia{
         int cantidadIngresar=0;
         int[]billetes={5,10,20,50,100,500};
         for(int i=0;i<billetes.length;i++){
