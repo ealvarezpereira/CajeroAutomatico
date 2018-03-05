@@ -29,6 +29,8 @@ public class Cajero {
     private boolean valido = false;
     private PrintWriter escribir;
     private Clientes cliente;
+    private static String nom;
+    private int credito;
 
     //Getter para que en el display no cierre la ventana al introducir un usuario incorrecto
     public boolean isValido() {
@@ -85,6 +87,34 @@ public class Cajero {
         return usuario;
     }
 
+    public void retornarNombre(String usuario, String ctra) {
+
+        File fich = new File("cajero.txt");
+        try {
+            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+            while ((line = reader.readLine()) != null) {
+                valido = false;
+
+                if (line.indexOf(usuario) != -1 && line.indexOf(ctra) != -1) {
+
+                    String[] nombre = line.split("\\s*,\\s*");
+
+                    nom = nombre[2];
+                    break;
+                }
+            }
+            reader.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error " + ex);
+        } catch (IOException ex) {
+            System.out.println("Error " + ex);
+        }
+    }
+
+    public static String getNom() {
+        return nom;
+    }
+    
     public void registrarUsuario() {
         /**
          * Estos JOptionPane son para darle valores al constructor de Clientes
@@ -204,7 +234,7 @@ public class Cajero {
             String usuario = obxDisplay.getUsuario();
 
             //En la variable credito parseamos el dinero que introducimos en la interfaz introducir dinero
-            int credito = Integer.parseInt(completo);
+            credito = Integer.parseInt(completo);
 
             //Creamos un buffer del fichero para leer datos
             final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
@@ -221,24 +251,24 @@ public class Cajero {
                 } else {
 
                     //Separamos la linea por comas
-                    String[] sep = salvadas.split("\\s*,\\s*");
+                    String[] lineaEntera = salvadas.split("\\s*,\\s*");
 
                     //Añadimos el precio a un string
-                    String precio = sep[3];
+                    String precio = lineaEntera[3];
 
                     //Separamos la palabra precio del precio en si
-                    String[] precioseparado = precio.split("\\s*:\\s*");
+                    String[] precioSeparado = precio.split("\\s*:\\s*");
                     //A la posicion del precio en si le damos el valor del precio que introducimos
 
                     ElegirOpcion opc = new ElegirOpcion();
 
                     //A la variable dinero le sumamos el dinero que sacamos del fichero junto con el dinero que introducimos
-                    int dinero = Integer.parseInt(precioseparado[1])+credito;
+                    int dinero = Integer.parseInt(precioSeparado[1]) + credito;
 
-                    precioseparado[1] = String.valueOf(dinero);
+                    precioSeparado[1] = String.valueOf(dinero);
 
                     //A la linea le añadimos la cadena entera
-                    salvadas = sep[0] + ", " + sep[1] + ", " + sep[2] + ", " + precioseparado[0] + ": " + precioseparado[1];
+                    salvadas = lineaEntera[0] + ", " + lineaEntera[1] + ", " + lineaEntera[2] + ", " + precioSeparado[0] + ": " + precioSeparado[1];
                     escribir.println(salvadas);
                     salvadas = "";
                     precio = "";
@@ -293,24 +323,22 @@ public class Cajero {
                 } else {
 
                     //Separamos la linea por comas
-                    String[] sep = salvadas.split("\\s*,\\s*");
+                    String[] lineaSeparada = salvadas.split("\\s*,\\s*");
 
                     //Añadimos el precio a un string
-                    String saldo = sep[3];
+                    String saldo = lineaSeparada[3];
 
                     //Separamos la palabra saldo del dinero en si
                     String[] dineroSeparado = saldo.split("\\s*:\\s*");
                     //A la posicion del dinero en si le damos el valor del dinero que introducimos
 
-                    ElegirOpcion opc = new ElegirOpcion();
-
+                    //ElegirOpcion opc = new ElegirOpcion();
                     //Si tienes menos saldo en el banco que la cantidad que introduces, que vuelva a introducir la linea
                     //sin hacer nada.
-                    
                     if (Integer.parseInt(dineroSeparado[1]) < credito) {
-                        
+
                         //A la linea le añadimos la cadena entera
-                        salvadas = sep[0] + ", " + sep[1] + ", " + sep[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                        salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
                         escribir.println(salvadas);
                         salvadas = "";
                         saldo = "";
@@ -321,7 +349,7 @@ public class Cajero {
                         dineroSeparado[1] = String.valueOf(dinero);
 
                         //A la linea le añadimos la cadena entera
-                        salvadas = sep[0] + ", " + sep[1] + ", " + sep[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                        salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
                         escribir.println(salvadas);
                         salvadas = "";
                         saldo = "";
