@@ -88,10 +88,12 @@ public class Display extends JFrame implements ActionListener {
             //Llamada al metodo que valida que el usuario esté registrado en el fichero
             caj.validarUsuario(usuario, ctra);
 
-            //Si el usuario es valido que cierre la pestaña de iniciar sesion
+            //Si el usuario es valido que cierre la pestaña de iniciar sesion           
             if (caj.isValido() == true) {
                 setVisible(false);
             }
+            //Este metodo simplemente es para que en el titulo de los JPanel muestre el nombre del usuario.
+            caj.retornarNombre(usuario, ctra);
 
         } else if (AE.getSource() == this.btnRegistro) {
 
@@ -104,7 +106,6 @@ public class Display extends JFrame implements ActionListener {
     }
 
     //Getter de usuario para la clase cajero.
-    
     public String getUsuario() {
         return usuario;
     }
