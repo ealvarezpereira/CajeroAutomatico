@@ -6,6 +6,7 @@
 package com.quidave.cajero;
 
 import com.david.cajero.ElegirOpcion;
+import com.david.libreria.*;
 import com.quique.cajero.Clientes;
 import com.quique.cajero.Display;
 import java.io.BufferedReader;
@@ -235,7 +236,7 @@ public class Cajero {
 
             //En la variable credito parseamos el dinero que introducimos en la interfaz introducir dinero
             credito = Integer.parseInt(completo);
-
+            
             //Creamos un buffer del fichero para leer datos
             final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
 
@@ -249,7 +250,7 @@ public class Cajero {
                 if (salvadas.contains(usuario) != true) {
                     escribir.println(salvadas);
                 } else {
-
+                    if(com.david.libreria.ValorBilletes.dineroIngresar(credito)==true){
                     //Separamos la linea por comas
                     String[] lineaEntera = salvadas.split("\\s*,\\s*");
 
@@ -272,6 +273,23 @@ public class Cajero {
                     escribir.println(salvadas);
                     salvadas = "";
                     precio = "";
+                }else{
+                        String[] lineaEntera = salvadas.split("\\s*,\\s*");
+                        //Añadimos el precio a un string
+                        String precio = lineaEntera[3];
+                        //Separamos la palabra precio del precio en si
+                        String[] precioSeparado = precio.split("\\s*:\\s*");
+                        //A la posicion del precio en si le damos el valor del precio que introducimos
+                        ElegirOpcion opc = new ElegirOpcion();
+                        //A la variable dinero le sumamos el dinero que sacamos del fichero junto con el dinero que introducimos
+                        int dinero = Integer.parseInt(precioSeparado[1]);
+                        precioSeparado[1] = String.valueOf(dinero);
+                        //A la linea le añadimos la cadena entera
+                        salvadas = lineaEntera[0] + ", " + lineaEntera[1] + ", " + lineaEntera[2] + ", " + precioSeparado[0] + ": " + precioSeparado[1];
+                        escribir.println(salvadas);
+                        salvadas = "";
+                        precio = "";              
+                }
                 }
             }
 
@@ -288,6 +306,8 @@ public class Cajero {
                 System.out.println("fichero no renombrado");
             }
 
+        }catch (ExcepcionPropia ex) {
+            JOptionPane.showMessageDialog(null, ex);
         } catch (FileNotFoundException ex) {
             System.out.println("Error " + ex);
         } catch (IOException ex) {
