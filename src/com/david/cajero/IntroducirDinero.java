@@ -6,7 +6,6 @@
 package com.david.cajero;
 
 import com.quidave.cajero.Cajero;
-import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 
 /**
  *
@@ -105,6 +104,7 @@ public class IntroducirDinero extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle(Cajero.getNom());
 
         bo2.setText("2");
         bo2.addActionListener(new java.awt.event.ActionListener() {
@@ -177,6 +177,11 @@ public class IntroducirDinero extends javax.swing.JFrame {
         });
 
         cancelar.setText("Cancelar");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
 
         bo1.setText("1");
         bo1.addActionListener(new java.awt.event.ActionListener() {
@@ -266,6 +271,7 @@ public class IntroducirDinero extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -318,6 +324,11 @@ public class IntroducirDinero extends javax.swing.JFrame {
         bo0();
     }//GEN-LAST:event_bo0ActionPerformed
 
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
+
+        cancelar();
+    }//GEN-LAST:event_cancelarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;
@@ -356,6 +367,7 @@ public class IntroducirDinero extends javax.swing.JFrame {
 
     String completo = "";
     String bot;
+    ElegirOpcion opc = new ElegirOpcion();
 
     public void bo1() {
         bot = "1";
@@ -437,12 +449,23 @@ public class IntroducirDinero extends javax.swing.JFrame {
 
         Cajero caj = new Cajero();
 
-        caj.ingresarDinero(completo);
+        if (ElegirOpcion.jopcion.getSelectedIndex() == 0) {
+            caj.ingresarDinero(completo);
+        } else if (ElegirOpcion.jopcion.getSelectedIndex() == 1) {
+            caj.quitarDinero(completo);
+        }
 
         setVisible(false);
-        
-        ElegirOpcion opc = new ElegirOpcion();
+
         opc.setVisible(true);
+    }
+
+    public void cancelar() {
+
+        setVisible(false);
+
+        opc.setVisible(true);
+
     }
 
 }
