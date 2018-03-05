@@ -5,14 +5,16 @@
  */
 package com.david.cajero;
 
+import com.quidave.cajero.Cajero;
 import com.quique.cajero.Display;
 import javax.swing.JComboBox;
+
 /**
  *
- * @author quique
+ * @author david
  */
 public class ElegirOpcion extends javax.swing.JFrame {
-
+ 
     /**
      * Creates new form Bototones
      */
@@ -81,6 +83,7 @@ public class ElegirOpcion extends javax.swing.JFrame {
         menuBar5.add(menu10);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle(Cajero.getNom());
 
         aceptar.setText("Aceptar");
         aceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -123,6 +126,7 @@ public class ElegirOpcion extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private int opcion = 0;
@@ -164,34 +168,24 @@ public class ElegirOpcion extends javax.swing.JFrame {
     private java.awt.MenuBar menuBar5;
     // End of variables declaration//GEN-END:variables
 
-    public JComboBox<String> jopcion;
+    public static JComboBox<String> jopcion;
 
     public void aceptar() {
 
         jopcion = this.Opciones;
 
-
-        if (jopcion.getSelectedIndex() == 0) {
-            IntroducirDinero bot = new IntroducirDinero();
-            bot.setVisible(true);
-            setVisible(false);
-
-        } else if (jopcion.getSelectedIndex() == 1) {
-
-            QuitarDinero quit = new QuitarDinero();
-            quit.setVisible(true);
-            setVisible(false);
-        }
+        IntroducirDinero bot = new IntroducirDinero();
+        bot.setVisible(true);
+        setVisible(false);
 
     }
 
     private void cancelar() {
 
         setVisible(false);
-        
+
         Display dis = new Display();
         dis.setVisible(true);
-
 
     }
 }
