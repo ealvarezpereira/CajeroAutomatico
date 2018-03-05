@@ -16,6 +16,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -115,7 +117,7 @@ public class Cajero {
     public static String getNom() {
         return nom;
     }
-    
+
     public void registrarUsuario() {
         /**
          * Estos JOptionPane son para darle valores al constructor de Clientes
@@ -224,6 +226,8 @@ public class Cajero {
 
     File fich2;
     int m;
+    BufferedReader reader;
+    String salvadas;
 
     public void ingresarDinero(String completo) {
         fich = new File("cajero.txt");
@@ -236,60 +240,42 @@ public class Cajero {
 
             //En la variable credito parseamos el dinero que introducimos en la interfaz introducir dinero
             credito = Integer.parseInt(completo);
-            
+
             //Creamos un buffer del fichero para leer datos
-            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+            reader = new BufferedReader(new FileReader("cajero.txt"));
 
             escribir = new PrintWriter(new FileWriter(fich2, true));
             //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
             //leer la linea) sea distinto de null te haga el if
             while ((line = reader.readLine()) != null) {
                 m = 0;
-                String salvadas = line;
+                salvadas = line;
 
                 if (salvadas.contains(usuario) != true) {
                     escribir.println(salvadas);
                 } else {
-                    if(com.david.libreria.ValorBilletes.dineroIngresar(credito)==true){
-                    //Separamos la linea por comas
-                    String[] lineaEntera = salvadas.split("\\s*,\\s*");
-
-                    //Añadimos el precio a un string
-                    String precio = lineaEntera[3];
-
-                    //Separamos la palabra precio del precio en si
-                    String[] precioSeparado = precio.split("\\s*:\\s*");
-                    //A la posicion del precio en si le damos el valor del precio que introducimos
-
-                    ElegirOpcion opc = new ElegirOpcion();
-
-                    //A la variable dinero le sumamos el dinero que sacamos del fichero junto con el dinero que introducimos
-                    int dinero = Integer.parseInt(precioSeparado[1]) + credito;
-
-                    precioSeparado[1] = String.valueOf(dinero);
-
-                    //A la linea le añadimos la cadena entera
-                    salvadas = lineaEntera[0] + ", " + lineaEntera[1] + ", " + lineaEntera[2] + ", " + precioSeparado[0] + ": " + precioSeparado[1];
-                    escribir.println(salvadas);
-                    salvadas = "";
-                    precio = "";
-                }else{
+                    if (com.david.libreria.ValorBilletes.dineroIngresar(credito) == true) {
+                        //Separamos la linea por comas
                         String[] lineaEntera = salvadas.split("\\s*,\\s*");
+
                         //Añadimos el precio a un string
                         String precio = lineaEntera[3];
+
                         //Separamos la palabra precio del precio en si
                         String[] precioSeparado = precio.split("\\s*:\\s*");
-                        //A la posicion del precio en si le damos el valor del precio que introducimos
-                        ElegirOpcion opc = new ElegirOpcion();
+
                         //A la variable dinero le sumamos el dinero que sacamos del fichero junto con el dinero que introducimos
-                        int dinero = Integer.parseInt(precioSeparado[1]);
+                        int dinero = Integer.parseInt(precioSeparado[1]) + credito;
+
                         precioSeparado[1] = String.valueOf(dinero);
+
                         //A la linea le añadimos la cadena entera
                         salvadas = lineaEntera[0] + ", " + lineaEntera[1] + ", " + lineaEntera[2] + ", " + precioSeparado[0] + ": " + precioSeparado[1];
                         escribir.println(salvadas);
                         salvadas = "";
-                        precio = "";              
-                }
+                        precio = "";
+                        credito = 0;
+                    }
                 }
             }
 
@@ -298,7 +284,6 @@ public class Cajero {
             fich.delete();
             //Renombramos el fichero
             boolean correcto = fich2.renameTo(fich);
-
             if (correcto) {
                 System.out.println("Fichero renombrado.");
 
@@ -306,12 +291,24 @@ public class Cajero {
                 System.out.println("fichero no renombrado");
             }
 
-        }catch (ExcepcionPropia ex) {
+        } catch (ExcepcionPropia ex) {
             JOptionPane.showMessageDialog(null, ex);
         } catch (FileNotFoundException ex) {
             System.out.println("Error " + ex);
         } catch (IOException ex) {
             System.out.println("Error " + ex);
+        } finally {
+            
+            //El finally está para que si no introduces un múltiplo de 5 para que cierre el fichero y no
+            //rompa el programa.
+            
+            try {
+                reader.close();
+                escribir.close();
+            } catch (IOException ex) {
+                System.out.println("Error " + ex);
+            }
+
         }
 
     }
