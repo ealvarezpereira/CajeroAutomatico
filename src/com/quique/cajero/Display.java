@@ -48,6 +48,7 @@ public class Display extends JFrame implements ActionListener {
 
         super("IDENTIFICARSE");
         this.setSize(400, 270);
+         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //-- LE AGREGAMOS EL GESTIONADOR DE EVENTOS
