@@ -334,4 +334,99 @@ public class Cajero {
         }
 
     }
+    
+    
+    public void mostrarSaldo(){
+        fich=new File("cajero.txt");
+        
+        try {
+            Display obxDisplay = new Display();
+            //Aqui pedimos el usuario
+            String usuario = obxDisplay.getUsuario();
+            
+            //Buffer para ler o ficheiro
+            final BufferedReader reader=new BufferedReader(new FileReader("cajero.txt"));
+            
+            //Mientras la linea que le metes el valor reader.readLine(), sea distinto a null. Ejecuta el if.
+            while((line = reader.readLine()) != null) {
+                if(line.indexOf(usuario)!=-1){
+                    String[]lista=line.split("\\s*,\\s*");
+                    JOptionPane.showMessageDialog(null, "Usuario: "+usuario+", precio: "+lista[3]);
+//                    System.out.println("Titulo: "+lista[0]+", precio: "+lista[2]);
+                    break;
+                }  
+            }
+            reader.close();
+            
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error " + ex);
+        } catch (IOException ex) {
+            System.out.println("Error " + ex);
+        } 
+    }
+    
+    public void transferencia(String completo){
+        fich = new File("cajero.txt");
+        fich2 = new File("cajero2.txt");
+
+        try {
+            Display obxDisplay = new Display();
+            //Aqui pedimos el usuario
+            String usuario = obxDisplay.getUsuario();
+            
+            //Aqui pedimos el nombre del usuario al que se le quiere hacer la transferencia.
+            String nombreTrans=JOptionPane.showInputDialog("Introducir el nombre del usuario: ");            
+
+            //En la variable credito parseamos la cantidad de dinero que queremos transferir
+            int credito = Integer.parseInt(completo);
+
+            //Creamos un buffer del fichero para leer datos
+            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+
+            escribir = new PrintWriter(new FileWriter(fich2, true));
+            //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
+            //leer la linea) sea distinto de null te haga el if
+            while((line=reader.readLine()) != null) {
+                String salvadas=line;
+                String[]lineaSeparada=new String[8];
+                String[] dineroSeparado=new String[8];
+                   
+                //Separamos la linea por comas
+                lineaSeparada=salvadas.split("\\s*,\\s*");
+                //Añadimos el precio a un string
+                String saldo = lineaSeparada[3];
+                //Separamos la palabra saldo del dinero en si
+                dineroSeparado = saldo.split("\\s*:\\s*");
+                if(line.indexOf(nombreTrans)!=-1){
+                    int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
+                    dineroSeparado[1] = String.valueOf(dinero);
+                    salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                    escribir.println(salvadas);
+                }
+                if(line.indexOf(usuario)!=-1){
+                    int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
+                    dineroSeparado[1] = String.valueOf(dinero);
+                    salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                    escribir.println(salvadas);
+                } 
+            }
+            reader.close();
+            escribir.close();
+            fich.delete();
+            
+            //Renombramos el fichero
+            boolean correcto = fich2.renameTo(fich);
+            if (correcto) {
+                System.out.println("Fichero renombrado.");
+            } else {
+                System.out.println("fichero no renombrado");
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error " + ex);
+        } catch (IOException ex) {
+            System.out.println("Error " + ex);
+        }
+    }
+    
 }
