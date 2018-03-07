@@ -99,7 +99,12 @@ public class ElegirOpcion extends javax.swing.JFrame {
             }
         });
 
-        Opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Introducir dinero", "Sacar dinero", "Darse de baja", "Transferencia bancaria" }));
+        Opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Introducir dinero", "Sacar dinero", "Darse de baja", "Transferencia bancaria", "Mostrar saldo" }));
+        Opciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OpcionesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,6 +146,10 @@ public class ElegirOpcion extends javax.swing.JFrame {
         cancelar();
     }//GEN-LAST:event_cancelarActionPerformed
 
+    private void OpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpcionesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_OpcionesActionPerformed
+
     public void botonesActionPerformed(java.awt.event.ActionEvent evt) {
 
     }
@@ -171,13 +180,28 @@ public class ElegirOpcion extends javax.swing.JFrame {
     public static JComboBox<String> jopcion;
 
     public void aceptar() {
-
+        
         jopcion = this.Opciones;
-
-        IntroducirDinero bot = new IntroducirDinero();
-        bot.setVisible(true);
-        setVisible(false);
-
+        
+        Cajero caj=new Cajero();
+        
+        if(jopcion.getSelectedIndex()==4){
+            caj.mostrarSaldo();
+        }else if(jopcion.getSelectedIndex()==0){
+            IntroducirDinero bot = new IntroducirDinero();
+            bot.setVisible(true);
+            setVisible(false);
+        }
+        if(jopcion.getSelectedIndex()==1){
+            IntroducirDinero bot = new IntroducirDinero();
+            bot.setVisible(true);
+            setVisible(false);
+        }
+        if(jopcion.getSelectedIndex()==3){
+            IntroducirDinero bot = new IntroducirDinero();
+            bot.setVisible(true);
+            setVisible(false);
+        }
     }
 
     private void cancelar() {
