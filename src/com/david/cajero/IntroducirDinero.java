@@ -449,11 +449,7 @@ public class IntroducirDinero extends javax.swing.JFrame {
 
         Cajero caj = new Cajero();
 
-        if (ElegirOpcion.jopcion.getSelectedIndex() == 0) {
-            caj.ingresarDinero(completo);
-        } else if (ElegirOpcion.jopcion.getSelectedIndex() == 1) {
-            caj.quitarDinero(completo);
-        }
+        caj.operacionesDinero(completo);
 
         setVisible(false);
 
