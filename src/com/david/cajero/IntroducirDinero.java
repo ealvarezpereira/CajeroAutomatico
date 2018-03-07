@@ -446,14 +446,24 @@ public class IntroducirDinero extends javax.swing.JFrame {
     }
 
     private void aceptar() {
-
         Cajero caj = new Cajero();
+        
+        if(ElegirOpcion.jopcion.getSelectedIndex()!=3){
+            
 
         caj.operacionesDinero(completo);
 
         setVisible(false);
 
         opc.setVisible(true);
+        
+        }else{
+            caj.transferencia(completo);
+            
+            setVisible(false);
+
+            opc.setVisible(true);
+        }
     }
 
     public void cancelar() {
