@@ -42,14 +42,13 @@ public class Cajero {
     public String validarUsuario(String usuario, String ctra) {
 
         File fich = new File("cajero.txt");
-        Display dis = new Display();
 
         //Si el usuario o la contraseña son valores en blanco o nulos que no permita continuar
         if (usuario.isEmpty() || ctra.isEmpty()) {
-
-            JOptionPane.showMessageDialog(null, "El usuario o contraseña no pueden quedar vacios.");
-
+            JOptionPane.showMessageDialog(null, "No puedes meter valores en blanco.");
+            Display.txtCtra.setText(null);
         } else {
+
             try {
                 final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
 
@@ -65,6 +64,7 @@ public class Cajero {
                         //La marca valido es para que si encuentra un usuario salte la marca
                         valido = true;
                         JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!");
+                        Display dis = new Display();
                         cuerpoDelCajero();
 
                         break;
@@ -75,6 +75,7 @@ public class Cajero {
                 if (valido == false) {
                     JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
                     //Con esto borramos el contenido del campo contraseña
+                    Display.txtCtra.setText(null);
                 }
 
                 reader.close();
