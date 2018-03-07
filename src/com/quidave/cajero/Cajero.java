@@ -9,6 +9,7 @@ import com.david.cajero.ElegirOpcion;
 import com.david.libreria.*;
 import com.quique.cajero.Clientes;
 import com.quique.cajero.Display;
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,8 +17,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -43,13 +42,14 @@ public class Cajero {
     public String validarUsuario(String usuario, String ctra) {
 
         File fich = new File("cajero.txt");
+        Display dis = new Display();
 
         //Si el usuario o la contraseña son valores en blanco o nulos que no permita continuar
-        if (usuario == "" && usuario.contains(null) || ctra == "" && ctra.contains(null)) {
-            JOptionPane.showMessageDialog(null, "No puedes meter valores en blanco.");
-            Display.txtCtra.setText(null);
-        } else {
+        if (usuario.isEmpty() || ctra.isEmpty()) {
 
+            JOptionPane.showMessageDialog(null, "El usuario o contraseña no pueden quedar vacios.");
+
+        } else {
             try {
                 final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
 
@@ -65,7 +65,6 @@ public class Cajero {
                         //La marca valido es para que si encuentra un usuario salte la marca
                         valido = true;
                         JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!");
-                        Display dis = new Display();
                         cuerpoDelCajero();
 
                         break;
@@ -76,7 +75,6 @@ public class Cajero {
                 if (valido == false) {
                     JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
                     //Con esto borramos el contenido del campo contraseña
-                    Display.txtCtra.setText(null);
                 }
 
                 reader.close();
@@ -225,11 +223,12 @@ public class Cajero {
     }
 
     File fich2;
-    int m;
+    private int m;
     BufferedReader reader;
-    String salvadas;
+    private String salvadas;
+    private int dinero;
 
-    public void ingresarDinero(String completo) {
+    public void operacionesDinero(String completo) {
         fich = new File("cajero.txt");
         fich2 = new File("cajero2.txt");
 
@@ -254,27 +253,51 @@ public class Cajero {
                 if (salvadas.contains(usuario) != true) {
                     escribir.println(salvadas);
                 } else {
+                    //Llamada a la librería con las excepciones
                     if (com.david.libreria.ValorBilletes.dineroIngresar(credito) == true) {
                         //Separamos la linea por comas
                         String[] lineaEntera = salvadas.split("\\s*,\\s*");
+                        //Añadimos el saldo a un string
+                        String saldo = lineaEntera[3];
+                        //Separamos la palabra Saldo del dinero en si
+                        String[] saldoSeparado = saldo.split("\\s*:\\s*");
 
-                        //Añadimos el precio a un string
-                        String precio = lineaEntera[3];
+                        //Si la opcion seleccionada es introducir dinero
+                        if (ElegirOpcion.jopcion.getSelectedIndex() == 0) {
+                            dinero = Integer.parseInt(saldoSeparado[1]) + credito;
 
-                        //Separamos la palabra precio del precio en si
-                        String[] precioSeparado = precio.split("\\s*:\\s*");
+                            saldoSeparado[1] = String.valueOf(dinero);
 
-                        //A la variable dinero le sumamos el dinero que sacamos del fichero junto con el dinero que introducimos
-                        int dinero = Integer.parseInt(precioSeparado[1]) + credito;
+                            //A la linea le añadimos la cadena entera
+                            salvadas = lineaEntera[0] + ", " + lineaEntera[1] + ", " + lineaEntera[2] + ", " + saldoSeparado[0] + ": " + saldoSeparado[1];
+                            escribir.println(salvadas);
+                            salvadas = "";
+                            saldo = "";
+                            credito = 0;
 
-                        precioSeparado[1] = String.valueOf(dinero);
+                            //Si la opcion que elegimos es retirar dinero
+                        } else if (ElegirOpcion.jopcion.getSelectedIndex() == 1) {
 
-                        //A la linea le añadimos la cadena entera
-                        salvadas = lineaEntera[0] + ", " + lineaEntera[1] + ", " + lineaEntera[2] + ", " + precioSeparado[0] + ": " + precioSeparado[1];
-                        escribir.println(salvadas);
-                        salvadas = "";
-                        precio = "";
-                        credito = 0;
+                            if (Integer.parseInt(saldoSeparado[1]) < credito) {
+
+                                //A la linea le añadimos la cadena entera
+                                salvadas = lineaEntera[0] + ", " + lineaEntera[1] + ", " + lineaEntera[2] + ", " + saldoSeparado[0] + ": " + saldoSeparado[1];
+                                escribir.println(salvadas);
+                                salvadas = "";
+                                saldo = "";
+                                JOptionPane.showMessageDialog(null, "Saldo insuficiente en la cuenta.");
+
+                            } else {
+                                int dinero = Integer.parseInt(saldoSeparado[1]) - credito;
+                                saldoSeparado[1] = String.valueOf(dinero);
+
+                                //A la linea le añadimos la cadena entera
+                                salvadas = lineaEntera[0] + ", " + lineaEntera[1] + ", " + lineaEntera[2] + ", " + saldoSeparado[0] + ": " + saldoSeparado[1];
+                                escribir.println(salvadas);
+                                salvadas = "";
+                                saldo = "";
+                            }
+                        }
                     }
                 }
             }
@@ -282,11 +305,10 @@ public class Cajero {
             reader.close();
             escribir.close();
             fich.delete();
-            //Renombramos el fichero
+            //Renombramos el fichero. Esto es una prueba para ver si lo renombra o no.
             boolean correcto = fich2.renameTo(fich);
             if (correcto) {
                 System.out.println("Fichero renombrado.");
-
             } else {
                 System.out.println("fichero no renombrado");
             }
@@ -298,10 +320,9 @@ public class Cajero {
         } catch (IOException ex) {
             System.out.println("Error " + ex);
         } finally {
-            
+
             //El finally está para que si no introduces un múltiplo de 5 para que cierre el fichero y no
             //rompa el programa.
-            
             try {
                 reader.close();
                 escribir.close();
@@ -311,86 +332,5 @@ public class Cajero {
 
         }
 
-    }
-
-    public void quitarDinero(String completo) {
-        fich = new File("cajero.txt");
-        fich2 = new File("cajero2.txt");
-
-        try {
-            Display obxDisplay = new Display();
-            //Aqui pedimos el usuario
-            String usuario = obxDisplay.getUsuario();
-
-            //En la variable credito parseamos el dinero que introducimos en la interfaz retirar dinero
-            int credito = Integer.parseInt(completo);
-
-            //Creamos un buffer del fichero para leer datos
-            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
-
-            escribir = new PrintWriter(new FileWriter(fich2, true));
-            //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
-            //leer la linea) sea distinto de null te haga el if
-            while ((line = reader.readLine()) != null) {
-                m = 0;
-                String salvadas = line;
-
-                if (salvadas.contains(usuario) != true) {
-                    escribir.println(salvadas);
-                } else {
-
-                    //Separamos la linea por comas
-                    String[] lineaSeparada = salvadas.split("\\s*,\\s*");
-
-                    //Añadimos el precio a un string
-                    String saldo = lineaSeparada[3];
-
-                    //Separamos la palabra saldo del dinero en si
-                    String[] dineroSeparado = saldo.split("\\s*:\\s*");
-                    //A la posicion del dinero en si le damos el valor del dinero que introducimos
-
-                    //ElegirOpcion opc = new ElegirOpcion();
-                    //Si tienes menos saldo en el banco que la cantidad que introduces, que vuelva a introducir la linea
-                    //sin hacer nada.
-                    if (Integer.parseInt(dineroSeparado[1]) < credito) {
-
-                        //A la linea le añadimos la cadena entera
-                        salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
-                        escribir.println(salvadas);
-                        salvadas = "";
-                        saldo = "";
-                        JOptionPane.showMessageDialog(null, "Saldo insuficiente en la cuenta.");
-
-                    } else {
-                        int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
-                        dineroSeparado[1] = String.valueOf(dinero);
-
-                        //A la linea le añadimos la cadena entera
-                        salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
-                        escribir.println(salvadas);
-                        salvadas = "";
-                        saldo = "";
-                    }
-                }
-            }
-
-            reader.close();
-            escribir.close();
-            fich.delete();
-            //Renombramos el fichero
-            boolean correcto = fich2.renameTo(fich);
-
-            if (correcto) {
-                System.out.println("Fichero renombrado.");
-
-            } else {
-                System.out.println("fichero no renombrado");
-            }
-
-        } catch (FileNotFoundException ex) {
-            System.out.println("Error " + ex);
-        } catch (IOException ex) {
-            System.out.println("Error " + ex);
-        }
     }
 }
