@@ -48,7 +48,7 @@ public class Display extends JFrame implements ActionListener {
 
         super("IDENTIFICARSE");
         this.setSize(400, 270);
-         this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //-- LE AGREGAMOS EL GESTIONADOR DE EVENTOS
@@ -74,8 +74,32 @@ public class Display extends JFrame implements ActionListener {
 
         this.add(this.pnlMiPanel);
 
+        //Eventos mouseClicked que llama al metodo (usuario/ctra)MouseClicked
+        txtUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                usuarioMouseClicked(evt);
+            }
+        });
+
+        txtCtra.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ctraMouseClicked(evt);
+            }
+        });
     }
 
+    //Metodos que cuando haces clic en los jtextField le cambie el color de fondo a blanco (sirve cuando está en rojo)
+    public void usuarioMouseClicked(java.awt.event.MouseEvent evt) {
+
+        txtUsuario.setBackground(Color.white);
+    }
+
+    public void ctraMouseClicked(java.awt.event.MouseEvent evt) {
+
+        txtCtra.setBackground(Color.white);
+    }
+    
+    
     @Override
     public void actionPerformed(ActionEvent AE) {
         //-- CON "getSource()" VEMOS EN QUE BOTON SE HIZO CLICK
@@ -86,6 +110,13 @@ public class Display extends JFrame implements ActionListener {
             usuario = this.txtUsuario.getText();
             ctra = this.txtCtra.getText();
 
+            if (usuario.isEmpty()) {
+                txtUsuario.setBackground(Color.red);
+            }
+
+            if (ctra.isEmpty()) {
+                txtCtra.setBackground(Color.red);
+            }
             //Llamada al metodo que valida que el usuario esté registrado en el fichero
             caj.validarUsuario(usuario, ctra);
 
@@ -110,4 +141,9 @@ public class Display extends JFrame implements ActionListener {
     public String getUsuario() {
         return usuario;
     }
+
+    public String getCtra() {
+        return ctra;
+    }
+
 }
