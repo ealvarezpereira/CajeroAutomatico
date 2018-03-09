@@ -7,6 +7,7 @@ package com.david.cajero;
 
 import com.quidave.cajero.Cajero;
 import com.quique.cajero.Display;
+import java.awt.Color;
 import javax.swing.JComboBox;
 
 /**
@@ -207,7 +208,7 @@ public class ElegirOpcion extends javax.swing.JFrame {
     private void cancelar() {
 
         setVisible(false);
-
+        Display.txtCtra.setBackground(Color.white);
         Display dis = new Display();
         dis.setVisible(true);
 
