@@ -9,7 +9,6 @@ import com.david.cajero.ElegirOpcion;
 import com.david.libreria.*;
 import com.quique.cajero.Clientes;
 import com.quique.cajero.Display;
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,11 +40,11 @@ public class Cajero {
 
     public String validarUsuario(String usuario, String ctra) {
 
-        File fich = new File("cajero.txt");
+        fich = new File("cajero.txt");
 
         //Si el usuario o la contraseña son valores en blanco o nulos que no permita continuar
         if (usuario.isEmpty() || ctra.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No puedes meter valores en blanco.");
+            JOptionPane.showMessageDialog(null, "El intento de conexión no fue correcto.");
             Display.txtCtra.setText(null);
         } else {
 
@@ -65,6 +64,7 @@ public class Cajero {
                         valido = true;
                         JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!");
                         Display dis = new Display();
+                        Display.txtCtra.setText(null);
                         cuerpoDelCajero();
 
                         break;
@@ -91,7 +91,7 @@ public class Cajero {
 
     public void retornarNombre(String usuario, String ctra) {
 
-        File fich = new File("cajero.txt");
+        fich = new File("cajero.txt");
         try {
             final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
             while ((line = reader.readLine()) != null) {
@@ -196,7 +196,7 @@ public class Cajero {
 
     public void cuerpoDelCajero() {
 
-        //Este try-catch es para la interfaz de las ventanas.
+        //Este try-catch es para la apariencia de la interfaz gráfica de las ventanas.
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -334,38 +334,37 @@ public class Cajero {
         }
 
     }
-    
-    
-    public void mostrarSaldo(){
-        fich=new File("cajero.txt");
-        
+
+    public void mostrarSaldo() {
+        fich = new File("cajero.txt");
+
         try {
             Display obxDisplay = new Display();
             //Aqui pedimos el usuario
             String usuario = obxDisplay.getUsuario();
-            
+
             //Buffer para ler o ficheiro
-            final BufferedReader reader=new BufferedReader(new FileReader("cajero.txt"));
-            
+            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+
             //Mientras la linea que le metes el valor reader.readLine(), sea distinto a null. Ejecuta el if.
-            while((line = reader.readLine()) != null) {
-                if(line.indexOf(usuario)!=-1){
-                    String[]lista=line.split("\\s*,\\s*");
-                    JOptionPane.showMessageDialog(null, "Usuario: "+usuario+", precio: "+lista[3]);
+            while ((line = reader.readLine()) != null) {
+                if (line.indexOf(usuario) != -1) {
+                    String[] lista = line.split("\\s*,\\s*");
+                    JOptionPane.showMessageDialog(null, "Usuario: " + usuario + ", " + lista[3]);
 //                    System.out.println("Titulo: "+lista[0]+", precio: "+lista[2]);
                     break;
-                }  
+                }
             }
             reader.close();
-            
+
         } catch (FileNotFoundException ex) {
             System.out.println("Error " + ex);
         } catch (IOException ex) {
             System.out.println("Error " + ex);
-        } 
+        }
     }
-    
-    public void transferencia(String completo){
+
+    public void transferencia(String completo) {
         fich = new File("cajero.txt");
         fich2 = new File("cajero2.txt");
 
@@ -373,53 +372,62 @@ public class Cajero {
             Display obxDisplay = new Display();
             //Aqui pedimos el usuario
             String usuario = obxDisplay.getUsuario();
-            
-            //Aqui pedimos el nombre del usuario al que se le quiere hacer la transferencia.
-            String nombreTrans=JOptionPane.showInputDialog("Introducir el nombre del usuario: ");            
 
-            //En la variable credito parseamos la cantidad de dinero que queremos transferir
-            int credito = Integer.parseInt(completo);
+            //Pedimos la contraseña del usuario y si no es igual no hace nada.
+            String ctra = JOptionPane.showInputDialog("Introduce la contraseña");
 
-            //Creamos un buffer del fichero para leer datos
-            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+            if (ctra.equals(obxDisplay.getCtra())) {
 
-            escribir = new PrintWriter(new FileWriter(fich2, true));
-            //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
-            //leer la linea) sea distinto de null te haga el if
-            while((line=reader.readLine()) != null) {
-                String salvadas=line;
-                String[]lineaSeparada=new String[8];
-                String[] dineroSeparado=new String[8];
-                   
-                //Separamos la linea por comas
-                lineaSeparada=salvadas.split("\\s*,\\s*");
-                //Añadimos el precio a un string
-                String saldo = lineaSeparada[3];
-                //Separamos la palabra saldo del dinero en si
-                dineroSeparado = saldo.split("\\s*:\\s*");
-                if(line.indexOf(nombreTrans)!=-1){
-                    int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
-                    dineroSeparado[1] = String.valueOf(dinero);
-                    salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
-                    escribir.println(salvadas);
+                //Aqui pedimos el nombre del usuario al que se le quiere hacer la transferencia.
+                String nombreTrans = JOptionPane.showInputDialog("Introducir el nombre del usuario: ");
+
+                //En la variable credito parseamos la cantidad de dinero que queremos transferir
+                int credito = Integer.parseInt(completo);
+
+                //Creamos un buffer del fichero para leer datos
+                final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+
+                escribir = new PrintWriter(new FileWriter(fich2, true));
+                //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
+                //leer la linea) sea distinto de null te haga el if
+                while ((line = reader.readLine()) != null) {
+                    String salvadas = line;
+                    String[] lineaSeparada = new String[8];
+                    String[] dineroSeparado = new String[8];
+
+                    //Separamos la linea por comas
+                    lineaSeparada = salvadas.split("\\s*,\\s*");
+                    //Añadimos el saldo a un string
+                    String saldo = lineaSeparada[3];
+                    //Separamos la palabra saldo del dinero en si
+                    dineroSeparado = saldo.split("\\s*:\\s*");
+                    if (line.indexOf(nombreTrans) != -1) {
+                        int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
+                        dineroSeparado[1] = String.valueOf(dinero);
+                        salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                        escribir.println(salvadas);
+                    }
+                    if (line.indexOf(usuario) != -1) {
+                        int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
+                        dineroSeparado[1] = String.valueOf(dinero);
+                        salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                        escribir.println(salvadas);
+                    }
                 }
-                if(line.indexOf(usuario)!=-1){
-                    int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
-                    dineroSeparado[1] = String.valueOf(dinero);
-                    salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
-                    escribir.println(salvadas);
-                } 
-            }
-            reader.close();
-            escribir.close();
-            fich.delete();
-            
-            //Renombramos el fichero
-            boolean correcto = fich2.renameTo(fich);
-            if (correcto) {
-                System.out.println("Fichero renombrado.");
+                reader.close();
+                escribir.close();
+                fich.delete();
+
+                //Renombramos el fichero
+                boolean correcto = fich2.renameTo(fich);
+                if (correcto) {
+                    System.out.println("Fichero renombrado.");
+                } else {
+                    System.out.println("fichero no renombrado");
+                }
+
             } else {
-                System.out.println("fichero no renombrado");
+                JOptionPane.showMessageDialog(null, "Contraseña incorrecta.");
             }
 
         } catch (FileNotFoundException ex) {
@@ -428,5 +436,5 @@ public class Cajero {
             System.out.println("Error " + ex);
         }
     }
-    
+
 }
