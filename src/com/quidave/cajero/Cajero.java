@@ -16,6 +16,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,7 +34,12 @@ public class Cajero {
     private Clientes cliente;
     private static String nom;
     private int credito;
-
+    
+    //ICONOS DE JOptionPane:
+    Icon iconSaldo=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\dinero.png");
+    Icon iconUsuario=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\usuario.png");
+    Icon iconContraseña=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\contraseña.png");
+    
     //Getter para que en el display no cierre la ventana al introducir un usuario incorrecto
     public boolean isValido() {
         return valido;
@@ -126,7 +133,9 @@ public class Cajero {
          * @param nom Nombre del cliente
          * @param saldo Saldo de su cuenta
          */
-        String usu = JOptionPane.showInputDialog("Usuario");
+        
+        String usu = (String) JOptionPane.showInputDialog(null,"Usuario","Registrar usuario",0,iconUsuario,null,null);
+        
 
         //Mientras que el usuario sea un nulo o un valor en blanco que no te deje meterlo.
         while (usu.equals("") || usu == null) {
@@ -153,8 +162,8 @@ public class Cajero {
         } catch (IOException ex) {
             System.out.println("Error. " + ex);
         }
-
-        String ctra = JOptionPane.showInputDialog("Contraseña");
+       
+        String ctra = (String) JOptionPane.showInputDialog(null,"Contraseña","Contraseña",0,iconContraseña,null,null);
 
         while (ctra.equals("") || ctra == null) {
             ctra = JOptionPane.showInputDialog("Contraseña inválida.");
@@ -350,8 +359,7 @@ public class Cajero {
             while ((line = reader.readLine()) != null) {
                 if (line.indexOf(usuario) != -1) {
                     String[] lista = line.split("\\s*,\\s*");
-                    JOptionPane.showMessageDialog(null, "Usuario: " + usuario + ", " + lista[3]);
-//                    System.out.println("Titulo: "+lista[0]+", precio: "+lista[2]);
+                    JOptionPane.showMessageDialog(null, "Usuario: " + usuario + ", " + lista[3],"SALDO",JOptionPane.INFORMATION_MESSAGE,iconSaldo);
                     break;
                 }
             }
@@ -374,12 +382,14 @@ public class Cajero {
             String usuario = obxDisplay.getUsuario();
 
             //Pedimos la contraseña del usuario y si no es igual no hace nada.
-            String ctra = JOptionPane.showInputDialog("Introduce la contraseña");
+            Icon iconContraseña=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\contraseña.png");
+            String ctra = (String) JOptionPane.showInputDialog(null,"Introduce la contraseña","Contraseña",0,iconContraseña,null,null);
 
             if (ctra.equals(obxDisplay.getCtra())) {
 
                 //Aqui pedimos el nombre del usuario al que se le quiere hacer la transferencia.
-                String nombreTrans = JOptionPane.showInputDialog("Introducir el nombre del usuario: ");
+                Icon iconUsuario=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\usuario.png");
+                String nombreTrans = (String) JOptionPane.showInputDialog(null,"Introducir el nombre del usuario: ","Transferencia",0,iconUsuario,null,null);
 
                 //En la variable credito parseamos la cantidad de dinero que queremos transferir
                 int credito = Integer.parseInt(completo);
