@@ -39,7 +39,7 @@ public class Display extends JFrame implements ActionListener {
     //Cuadro de texto del usuario y cuadro de texto contraseña de la contraseña
     public JTextField txtUsuario = new JTextField(20);
     public static JPasswordField txtCtra = new JPasswordField(20);
-
+    
     //Panel que engloba todo
     public JPanel pnlMiPanel = new JPanel();
 
@@ -98,8 +98,7 @@ public class Display extends JFrame implements ActionListener {
 
         txtCtra.setBackground(Color.white);
     }
-    
-    
+
     @Override
     public void actionPerformed(ActionEvent AE) {
         //-- CON "getSource()" VEMOS EN QUE BOTON SE HIZO CLICK
