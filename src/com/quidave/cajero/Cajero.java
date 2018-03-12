@@ -382,7 +382,7 @@ public class Cajero {
             String usuario = obxDisplay.getUsuario();
 
             //Pedimos la contraseña del usuario y si no es igual no hace nada.
-            String ctra = (String) JOptionPane.showInputDialog(null,"Introduce la contraseña","Contraseña",0,iconContraseña,null,null);
+            String ctra = (String) JOptionPane.showInputDialog(null,"Verificar la contraseña","Contraseña",0,iconContraseña,null,null);
 
             if (ctra.equals(obxDisplay.getCtra())) {
 
@@ -403,23 +403,26 @@ public class Cajero {
                     String[] lineaSeparada = new String[8];
                     String[] dineroSeparado = new String[8];
 
-                    //Separamos la linea por comas
-                    lineaSeparada = salvadas.split("\\s*,\\s*");
-                    //Añadimos el saldo a un string
-                    String saldo = lineaSeparada[3];
-                    //Separamos la palabra saldo del dinero en si
-                    dineroSeparado = saldo.split("\\s*:\\s*");
-                    if (line.indexOf(nombreTrans) != -1) {
-                        int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
-                        dineroSeparado[1] = String.valueOf(dinero);
-                        salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
-                        escribir.println(salvadas);
-                    }
-                    if (line.indexOf(usuario) != -1) {
-                        int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
-                        dineroSeparado[1] = String.valueOf(dinero);
-                        salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
-                        escribir.println(salvadas);
+                    //Llamada a la librería con las excepciones
+                    if (com.david.libreria.ValorBilletes.dineroIngresar(credito) == true) {
+                        //Separamos la linea por comas
+                        lineaSeparada = salvadas.split("\\s*,\\s*");
+                        //Añadimos el saldo a un string
+                        String saldo = lineaSeparada[3];
+                        //Separamos la palabra saldo del dinero en si
+                        dineroSeparado = saldo.split("\\s*:\\s*");
+                        if (line.indexOf(nombreTrans) != -1) {
+                            int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
+                            dineroSeparado[1] = String.valueOf(dinero);
+                            salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                            escribir.println(salvadas);
+                        }
+                        if (line.indexOf(usuario) != -1) {
+                            int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
+                            dineroSeparado[1] = String.valueOf(dinero);
+                            salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                            escribir.println(salvadas);
+                        }
                     }
                 }
                 reader.close();
@@ -438,6 +441,8 @@ public class Cajero {
                 JOptionPane.showMessageDialog(null, "Contraseña incorrecta.");
             }
 
+        } catch (ExcepcionPropia ex) {
+            JOptionPane.showMessageDialog(null, ex);
         } catch (FileNotFoundException ex) {
             System.out.println("Error " + ex);
         } catch (IOException ex) {
