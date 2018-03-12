@@ -233,12 +233,18 @@ public class Cajero {
     }
 
     File fich2;
-    private int m;
     BufferedReader reader;
     private String salvadas;
     private int dinero;
 
     public void operacionesDinero(String completo) {
+        /**
+         *
+         * @param usuario Usuario del cliente
+         * @param nom Nombre del cliente
+         * @param credito Cantidad de dinero añadido por la interfaz
+         */
+        
         fich = new File("cajero.txt");
         fich2 = new File("cajero2.txt");
 
@@ -257,7 +263,6 @@ public class Cajero {
             //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
             //leer la linea) sea distinto de null te haga el if
             while ((line = reader.readLine()) != null) {
-                m = 0;
                 salvadas = line;
 
                 if (salvadas.contains(usuario) != true) {
@@ -349,7 +354,7 @@ public class Cajero {
 
         try {
             Display obxDisplay = new Display();
-            //Aqui pedimos el usuario
+            //Pedimos el usuario
             String usuario = obxDisplay.getUsuario();
 
             //Buffer para ler o ficheiro
@@ -373,12 +378,20 @@ public class Cajero {
     }
 
     public void transferencia(String completo) {
+        /**
+         *
+         * @param usuario Usuario del cliente
+         * @param ctra Contraseña de su cuenta
+         * @param nombreTrans Nombre del usuario de la transferencia
+         * @param credito Cantidad de dinero de la transferencia
+         */
+        
         fich = new File("cajero.txt");
         fich2 = new File("cajero2.txt");
 
         try {
             Display obxDisplay = new Display();
-            //Aqui pedimos el usuario
+            //Pedimos el usuario
             String usuario = obxDisplay.getUsuario();
 
             //Pedimos la contraseña del usuario y si no es igual no hace nada.
