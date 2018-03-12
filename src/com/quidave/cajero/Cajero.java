@@ -382,13 +382,11 @@ public class Cajero {
             String usuario = obxDisplay.getUsuario();
 
             //Pedimos la contraseña del usuario y si no es igual no hace nada.
-            Icon iconContraseña=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\contraseña.png");
             String ctra = (String) JOptionPane.showInputDialog(null,"Introduce la contraseña","Contraseña",0,iconContraseña,null,null);
 
             if (ctra.equals(obxDisplay.getCtra())) {
 
                 //Aqui pedimos el nombre del usuario al que se le quiere hacer la transferencia.
-                Icon iconUsuario=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\usuario.png");
                 String nombreTrans = (String) JOptionPane.showInputDialog(null,"Introducir el nombre del usuario: ","Transferencia",0,iconUsuario,null,null);
 
                 //En la variable credito parseamos la cantidad de dinero que queremos transferir
