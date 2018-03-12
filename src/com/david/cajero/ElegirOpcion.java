@@ -15,7 +15,7 @@ import javax.swing.JComboBox;
  * @author david
  */
 public class ElegirOpcion extends javax.swing.JFrame {
- 
+
     /**
      * Creates new form Bototones
      */
@@ -181,24 +181,20 @@ public class ElegirOpcion extends javax.swing.JFrame {
     public static JComboBox<String> jopcion;
 
     public void aceptar() {
-        
+
         jopcion = this.Opciones;
-        
-        Cajero caj=new Cajero();
-        
-        if(jopcion.getSelectedIndex()==4){
+
+        Cajero caj = new Cajero();
+
+        if (jopcion.getSelectedIndex() == 2) {
+            caj.eliminarCuenta();
+            setVisible(false);
+            Display dis = new Display();
+            dis.setVisible(true);
+            Display.txtCtra.setText(null);
+        } else if (jopcion.getSelectedIndex() == 4) {
             caj.mostrarSaldo();
-        }else if(jopcion.getSelectedIndex()==0){
-            IntroducirDinero bot = new IntroducirDinero();
-            bot.setVisible(true);
-            setVisible(false);
-        }
-        if(jopcion.getSelectedIndex()==1){
-            IntroducirDinero bot = new IntroducirDinero();
-            bot.setVisible(true);
-            setVisible(false);
-        }
-        if(jopcion.getSelectedIndex()==3){
+        } else {
             IntroducirDinero bot = new IntroducirDinero();
             bot.setVisible(true);
             setVisible(false);
