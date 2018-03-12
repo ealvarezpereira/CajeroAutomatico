@@ -34,12 +34,40 @@ public class Cajero {
     private Clientes cliente;
     private static String nom;
     private int credito;
-    
+    Display objDisplay;
+
     //ICONOS DE JOptionPane:
-    Icon iconSaldo=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\dinero.png");
-    Icon iconUsuario=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\usuario.png");
-    Icon iconContraseña=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\contraseña.png");
-    
+    Icon iconSaldo = new ImageIcon("");
+    Icon iconUsuario = new ImageIcon("");
+    Icon iconContraseña = new ImageIcon("");
+
+    public void cuerpoDelCajero() {
+
+        //Este try-catch es para la apariencia de la interfaz gráfica de las ventanas.
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        //Aqui es la llamada la interfaz grafica de las opciones
+        java.awt.EventQueue.invokeLater(() -> {
+            new ElegirOpcion().setVisible(true);
+        });
+
+    }
+
     //Getter para que en el display no cierre la ventana al introducir un usuario incorrecto
     public boolean isValido() {
         return valido;
@@ -65,12 +93,11 @@ public class Cajero {
 
                     //El indexOf si no encuentra el valor que le metes devuelve un -1, por eso la comparacion
                     //Si la busqueda es distinto de -1
-                    if (line.indexOf(usuario) != -1 && line.indexOf(ctra) != -1) {
+                    if (line.contains(usuario) == true && line.contains(ctra) == true) {
 
                         //La marca valido es para que si encuentra un usuario salte la marca
                         valido = true;
                         JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!");
-                        Display dis = new Display();
                         Display.txtCtra.setText(null);
                         cuerpoDelCajero();
 
@@ -104,10 +131,8 @@ public class Cajero {
             while ((line = reader.readLine()) != null) {
                 valido = false;
 
-                if (line.indexOf(usuario) != -1 && line.indexOf(ctra) != -1) {
-
+                if (line.contains(usuario) == true && line.contains(ctra) == true) {
                     String[] nombre = line.split("\\s*,\\s*");
-
                     nom = nombre[2];
                     break;
                 }
@@ -133,12 +158,11 @@ public class Cajero {
          * @param nom Nombre del cliente
          * @param saldo Saldo de su cuenta
          */
-        
-        String usu = (String) JOptionPane.showInputDialog(null,"Usuario","Registrar usuario",0,iconUsuario,null,null);
-        
 
-        //Mientras que el usuario sea un nulo o un valor en blanco que no te deje meterlo.
-        while (usu.equals("") || usu == null) {
+        String usu = (String) JOptionPane.showInputDialog(null, "Usuario", "Registrar usuario", 0, iconUsuario, null, null);
+
+        //Mientras que el usuario sea un un valor en blanco que no te deje meterlo.
+        while (usu.equals("")) {
             usu = JOptionPane.showInputDialog("Usuario inválido.");
         }
 
@@ -149,21 +173,20 @@ public class Cajero {
             String line = "";
 
             while ((line = leer.readLine()) != null) {
-
-                //El indexOf si no encuentra el valor que le metes devuelve un -1, por eso la comparacion
-                //Si la busqueda es distinto de -1
-                if (line.indexOf(usu) != -1) {
+                if (line.contains(usu) == true) {
                     usu = JOptionPane.showInputDialog("Usuario existente.");
                 }
             }
+            
+            leer.close();
 
         } catch (FileNotFoundException ex) {
             System.out.println("Error. No se ha encontrado. " + ex);
         } catch (IOException ex) {
             System.out.println("Error. " + ex);
         }
-       
-        String ctra = (String) JOptionPane.showInputDialog(null,"Contraseña","Contraseña",0,iconContraseña,null,null);
+
+        String ctra = (String) JOptionPane.showInputDialog(null, "Contraseña", "Contraseña", 0, iconContraseña, null, null);
 
         while (ctra.equals("") || ctra == null) {
             ctra = JOptionPane.showInputDialog("Contraseña inválida.");
@@ -203,35 +226,6 @@ public class Cajero {
 
     }
 
-    public void cuerpoDelCajero() {
-
-        //Este try-catch es para la apariencia de la interfaz gráfica de las ventanas.
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        //Aqui es la llamada la interfaz grafica de las opciones
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ElegirOpcion().setVisible(true);
-            }
-        });
-
-    }
-
     File fich2;
     private int m;
     BufferedReader reader;
@@ -243,9 +237,9 @@ public class Cajero {
         fich2 = new File("cajero2.txt");
 
         try {
-            Display obxDisplay = new Display();
+            objDisplay = new Display();
             //Aqui pedimos el usuario
-            String usuario = obxDisplay.getUsuario();
+            String usuario = objDisplay.getUsuario();
 
             //En la variable credito parseamos el dinero que introducimos en la interfaz introducir dinero
             credito = Integer.parseInt(completo);
@@ -318,7 +312,7 @@ public class Cajero {
             //Renombramos el fichero. Esto es una prueba para ver si lo renombra o no.
             boolean correcto = fich2.renameTo(fich);
             if (correcto) {
-                System.out.println("Fichero renombrado.");
+                System.out.println("Fichero renombrado, Operacion completada.");
             } else {
                 System.out.println("fichero no renombrado");
             }
@@ -348,18 +342,18 @@ public class Cajero {
         fich = new File("cajero.txt");
 
         try {
-            Display obxDisplay = new Display();
+            objDisplay = new Display();
             //Aqui pedimos el usuario
-            String usuario = obxDisplay.getUsuario();
+            String usuario = objDisplay.getUsuario();
 
             //Buffer para ler o ficheiro
             final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
 
             //Mientras la linea que le metes el valor reader.readLine(), sea distinto a null. Ejecuta el if.
             while ((line = reader.readLine()) != null) {
-                if (line.indexOf(usuario) != -1) {
+                if (line.contains(usuario) == true) {
                     String[] lista = line.split("\\s*,\\s*");
-                    JOptionPane.showMessageDialog(null, "Usuario: " + usuario + ", " + lista[3],"SALDO",JOptionPane.INFORMATION_MESSAGE,iconSaldo);
+                    JOptionPane.showMessageDialog(null, "Usuario: " + usuario + ", " + lista[3], "SALDO", JOptionPane.INFORMATION_MESSAGE, iconSaldo);
                     break;
                 }
             }
@@ -377,19 +371,19 @@ public class Cajero {
         fich2 = new File("cajero2.txt");
 
         try {
-            Display obxDisplay = new Display();
+            objDisplay = new Display();
             //Aqui pedimos el usuario
-            String usuario = obxDisplay.getUsuario();
+            String usuario = objDisplay.getUsuario();
 
             //Pedimos la contraseña del usuario y si no es igual no hace nada.
-            Icon iconContraseña=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\contraseña.png");
-            String ctra = (String) JOptionPane.showInputDialog(null,"Introduce la contraseña","Contraseña",0,iconContraseña,null,null);
+            Icon iconContraseña = new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\contraseña.png");
+            String ctra = (String) JOptionPane.showInputDialog(null, "Introduce la contraseña", "Contraseña", 0, iconContraseña, null, null);
 
-            if (ctra.equals(obxDisplay.getCtra())) {
+            if (ctra.equals(objDisplay.getCtra())) {
 
                 //Aqui pedimos el nombre del usuario al que se le quiere hacer la transferencia.
-                Icon iconUsuario=new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\usuario.png");
-                String nombreTrans = (String) JOptionPane.showInputDialog(null,"Introducir el nombre del usuario: ","Transferencia",0,iconUsuario,null,null);
+                Icon iconUsuario = new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\usuario.png");
+                String nombreTrans = (String) JOptionPane.showInputDialog(null, "Introducir el nombre del usuario: ", "Transferencia", 0, iconUsuario, null, null);
 
                 //En la variable credito parseamos la cantidad de dinero que queremos transferir
                 int credito = Integer.parseInt(completo);
@@ -402,8 +396,12 @@ public class Cajero {
                 //leer la linea) sea distinto de null te haga el if
                 while ((line = reader.readLine()) != null) {
                     String salvadas = line;
-                    String[] lineaSeparada = new String[8];
-                    String[] dineroSeparado = new String[8];
+                    String[] lineaSeparada;
+                    String[] dineroSeparado;
+
+                    if (line.contains(usuario) == false && line.contains(nombreTrans) == false) {
+                        escribir.println(salvadas);
+                    }
 
                     //Separamos la linea por comas
                     lineaSeparada = salvadas.split("\\s*,\\s*");
@@ -411,18 +409,19 @@ public class Cajero {
                     String saldo = lineaSeparada[3];
                     //Separamos la palabra saldo del dinero en si
                     dineroSeparado = saldo.split("\\s*:\\s*");
-                    if (line.indexOf(nombreTrans) != -1) {
+                    if (line.contains(nombreTrans) == true) {
                         int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
                         dineroSeparado[1] = String.valueOf(dinero);
                         salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
                         escribir.println(salvadas);
                     }
-                    if (line.indexOf(usuario) != -1) {
+                    if (line.contains(usuario) == true) {
                         int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
                         dineroSeparado[1] = String.valueOf(dinero);
                         salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
                         escribir.println(salvadas);
                     }
+
                 }
                 reader.close();
                 escribir.close();
@@ -431,7 +430,7 @@ public class Cajero {
                 //Renombramos el fichero
                 boolean correcto = fich2.renameTo(fich);
                 if (correcto) {
-                    System.out.println("Fichero renombrado.");
+                    System.out.println("Fichero renombrado, Operacion completada.");
                 } else {
                     System.out.println("fichero no renombrado");
                 }
@@ -447,4 +446,39 @@ public class Cajero {
         }
     }
 
+    public void eliminarCuenta() {
+        fich = new File("cajero.txt");
+        fich2 = new File("cajero2.txt");
+        try {
+            objDisplay = new Display();
+            //Aqui pedimos el usuario
+            String usuario = objDisplay.getUsuario();
+            //Buffer para ler o ficheiro
+            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+            escribir = new PrintWriter(new FileWriter(fich2, true));
+            //Mientras la linea que le metes el valor reader.readLine(), sea distinto a null. Ejecuta el if.
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(usuario) == false) {
+                    escribir.println(line);
+                }
+            }
+            reader.close();
+            escribir.close();
+            fich.delete();
+            //Renombramos el fichero. Esto es una prueba para ver si lo renombra o no.
+            boolean correcto = fich2.renameTo(fich);
+            if (correcto) {
+                System.out.println("Fichero renombrado, Operacion completada.");
+            } else {
+                System.out.println("fichero no renombrado");
+            }
+
+            JOptionPane.showMessageDialog(null, "Cuenta eliminada correctamente.");
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error " + ex);
+        } catch (IOException ex) {
+            System.out.println("Error " + ex);
+        }
+    }
 }
