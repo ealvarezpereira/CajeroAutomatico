@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,10 +37,15 @@ public class Display extends JFrame implements ActionListener {
     public JLabel lblUsuario = new JLabel("Usuario : ");
     public JLabel lblCtra = new JLabel("Contraseña : ");
 
+    ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/error.png"));
+
+    JLabel lblIcono = new JLabel();
+    JLabel lblIcono2 = new JLabel();
+
     //Cuadro de texto del usuario y cuadro de texto contraseña de la contraseña
     public JTextField txtUsuario = new JTextField(20);
     public static JPasswordField txtCtra = new JPasswordField(20);
-    
+
     //Panel que engloba todo
     public JPanel pnlMiPanel = new JPanel();
 
@@ -47,7 +53,7 @@ public class Display extends JFrame implements ActionListener {
         //-- CONFIGURAMOS LA VENTANA JFRAME
 
         super("IDENTIFICARSE");
-        this.setSize(400, 270);
+        this.setSize(450, 270);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -65,8 +71,10 @@ public class Display extends JFrame implements ActionListener {
 
         //-- LE AGREGAMOS LOS OBJETOS A LA VENTANA
         this.pnlMiPanel.add(this.lblUsuario);
+        this.pnlMiPanel.add(this.lblIcono);
         this.pnlMiPanel.add(this.txtUsuario);
         this.pnlMiPanel.add(this.lblCtra);
+        this.pnlMiPanel.add(this.lblIcono2);
         this.pnlMiPanel.add(this.txtCtra);
         this.pnlMiPanel.add(this.btnIniciar);
         this.pnlMiPanel.add(this.btnRegistro);
@@ -92,11 +100,12 @@ public class Display extends JFrame implements ActionListener {
     public void usuarioMouseClicked(java.awt.event.MouseEvent evt) {
 
         txtUsuario.setBackground(Color.white);
+        this.lblIcono.removeAll();
     }
 
     public void ctraMouseClicked(java.awt.event.MouseEvent evt) {
-
         txtCtra.setBackground(Color.white);
+        this.lblIcono2.removeAll();
     }
 
     @Override
@@ -111,10 +120,13 @@ public class Display extends JFrame implements ActionListener {
 
             if (usuario.isEmpty()) {
                 txtUsuario.setBackground(Color.red);
+                lblIcono.setIcon(icon);
+
             }
 
             if (ctra.isEmpty()) {
                 txtCtra.setBackground(Color.red);
+                lblIcono2.setIcon(icon);
             }
             //Llamada al metodo que valida que el usuario esté registrado en el fichero
             caj.validarUsuario(usuario, ctra);
