@@ -43,6 +43,7 @@ public class Cajero {
     Icon iconCorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/correcto.png"));
     Icon iconPassIncorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/contraseña-incorrecta.png"));
     Icon iconUsuIncorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/usuario-incorrecto.png"));
+    Icon iconError = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/incorrecto.png"));
     
 
     public void cuerpoDelCajero() {
@@ -83,7 +84,7 @@ public class Cajero {
 
         //Si el usuario o la contraseña son valores en blanco o nulos que no permita continuar
         if (usuario.isEmpty() || ctra.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "El intento de conexión no fue correcto.");
+            JOptionPane.showMessageDialog(null, "El intento de conexión no fue correcto.","Incio sesión",JOptionPane.INFORMATION_MESSAGE,iconError);
             Display.txtCtra.setText(null);
         } else {
 
