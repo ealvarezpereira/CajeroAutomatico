@@ -37,9 +37,9 @@ public class Cajero {
     Display objDisplay;
 
     //ICONOS DE JOptionPane:
-    Icon iconSaldo = new ImageIcon("");
-    Icon iconUsuario = new ImageIcon("");
-    Icon iconContraseña = new ImageIcon("");
+    Icon iconSaldo = new ImageIcon("mostrar-dinero.png");
+    Icon iconUsuario = new ImageIcon("usuario.png");
+    Icon iconContraseña = new ImageIcon("contraseña.png");
 
     public void cuerpoDelCajero() {
 
@@ -353,7 +353,7 @@ public class Cajero {
             while ((line = reader.readLine()) != null) {
                 if (line.contains(usuario) == true) {
                     String[] lista = line.split("\\s*,\\s*");
-                    JOptionPane.showMessageDialog(null, "Usuario: " + usuario + ", " + lista[3], "SALDO", JOptionPane.INFORMATION_MESSAGE, iconSaldo);
+                    JOptionPane.showMessageDialog(null, "Usuario: " + usuario + ", " + lista[3],"SALDO",JOptionPane.INFORMATION_MESSAGE,iconSaldo);
                     break;
                 }
             }
@@ -376,13 +376,13 @@ public class Cajero {
             String usuario = objDisplay.getUsuario();
 
             //Pedimos la contraseña del usuario y si no es igual no hace nada.
-            Icon iconContraseña = new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\contraseña.png");
+
             String ctra = (String) JOptionPane.showInputDialog(null, "Introduce la contraseña", "Contraseña", 0, iconContraseña, null, null);
 
             if (ctra.equals(objDisplay.getCtra())) {
 
                 //Aqui pedimos el nombre del usuario al que se le quiere hacer la transferencia.
-                Icon iconUsuario = new ImageIcon("C:\\Users\\David\\Documents\\NetBeansProjects\\CajeroAutomatico\\AppCajeroAutomatico\\img\\usuario.png");
+
                 String nombreTrans = (String) JOptionPane.showInputDialog(null, "Introducir el nombre del usuario: ", "Transferencia", 0, iconUsuario, null, null);
 
                 //En la variable credito parseamos la cantidad de dinero que queremos transferir
@@ -398,30 +398,31 @@ public class Cajero {
                     String salvadas = line;
                     String[] lineaSeparada;
                     String[] dineroSeparado;
+                    
+                    if (com.david.libreria.ValorBilletes.dineroIngresar(credito) == true) {
+                        if (line.contains(usuario) == false && line.contains(nombreTrans) == false) {
+                            escribir.println(salvadas);
+                        }
 
-                    if (line.contains(usuario) == false && line.contains(nombreTrans) == false) {
-                        escribir.println(salvadas);
+                        //Separamos la linea por comas
+                        lineaSeparada = salvadas.split("\\s*,\\s*");
+                        //Añadimos el saldo a un string
+                        String saldo = lineaSeparada[3];
+                        //Separamos la palabra saldo del dinero en si
+                        dineroSeparado = saldo.split("\\s*:\\s*");
+                        if (line.contains(nombreTrans) == true) {
+                            int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
+                            dineroSeparado[1] = String.valueOf(dinero);
+                            salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                            escribir.println(salvadas);
+                        }
+                        if (line.contains(usuario) == true) {
+                            int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
+                            dineroSeparado[1] = String.valueOf(dinero);
+                            salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                            escribir.println(salvadas);
+                        }
                     }
-
-                    //Separamos la linea por comas
-                    lineaSeparada = salvadas.split("\\s*,\\s*");
-                    //Añadimos el saldo a un string
-                    String saldo = lineaSeparada[3];
-                    //Separamos la palabra saldo del dinero en si
-                    dineroSeparado = saldo.split("\\s*:\\s*");
-                    if (line.contains(nombreTrans) == true) {
-                        int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
-                        dineroSeparado[1] = String.valueOf(dinero);
-                        salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
-                        escribir.println(salvadas);
-                    }
-                    if (line.contains(usuario) == true) {
-                        int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
-                        dineroSeparado[1] = String.valueOf(dinero);
-                        salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
-                        escribir.println(salvadas);
-                    }
-
                 }
                 reader.close();
                 escribir.close();
@@ -439,6 +440,8 @@ public class Cajero {
                 JOptionPane.showMessageDialog(null, "Contraseña incorrecta.");
             }
 
+        } catch (ExcepcionPropia ex) {
+            JOptionPane.showMessageDialog(null, ex);
         } catch (FileNotFoundException ex) {
             System.out.println("Error " + ex);
         } catch (IOException ex) {
