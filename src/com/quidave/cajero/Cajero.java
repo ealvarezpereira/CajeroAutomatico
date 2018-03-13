@@ -37,9 +37,13 @@ public class Cajero {
     Display objDisplay;
 
     //ICONOS DE JOptionPane:
-    Icon iconSaldo = new ImageIcon("mostrar-dinero.png");
-    Icon iconUsuario = new ImageIcon("usuario.png");
-    Icon iconContraseña = new ImageIcon("contraseña.png");
+    Icon iconSaldo = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/mostrar-dinero.png"));
+    Icon iconUsuario = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/usuario.png"));
+    Icon iconContraseña = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/contraseña.png"));
+    Icon iconCorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/correcto.png"));
+    Icon iconPassIncorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/contraseña-incorrecta.png"));
+    Icon iconUsuIncorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/usuario-incorrecto.png"));
+    
 
     public void cuerpoDelCajero() {
 
@@ -97,7 +101,7 @@ public class Cajero {
 
                         //La marca valido es para que si encuentra un usuario salte la marca
                         valido = true;
-                        JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!");
+                        JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!","Sesión inciada",JOptionPane.INFORMATION_MESSAGE,iconCorrecto);
                         Display.txtCtra.setText(null);
                         cuerpoDelCajero();
 
@@ -174,7 +178,7 @@ public class Cajero {
 
             while ((line = leer.readLine()) != null) {
                 if (line.contains(usu) == true) {
-                    usu = JOptionPane.showInputDialog("Usuario existente.");
+                    usu = (String) JOptionPane.showInputDialog(null,"Usuario existente.","Usuario",0,iconUsuIncorrecto,null,null);
                 }
             }
             
@@ -189,7 +193,7 @@ public class Cajero {
         String ctra = (String) JOptionPane.showInputDialog(null, "Contraseña", "Contraseña", 0, iconContraseña, null, null);
 
         while (ctra.equals("") || ctra == null) {
-            ctra = JOptionPane.showInputDialog("Contraseña inválida.");
+            ctra = (String) JOptionPane.showInputDialog(null, "Contraseña inválida.", "Contraseña", 0, iconPassIncorrecto, null, null);
 
         }
 
@@ -382,48 +386,56 @@ public class Cajero {
             if (ctra.equals(objDisplay.getCtra())) {
 
                 //Aqui pedimos el nombre del usuario al que se le quiere hacer la transferencia.
-
                 String nombreTrans = (String) JOptionPane.showInputDialog(null, "Introducir el nombre del usuario: ", "Transferencia", 0, iconUsuario, null, null);
-
-                //En la variable credito parseamos la cantidad de dinero que queremos transferir
-                int credito = Integer.parseInt(completo);
-
-                //Creamos un buffer del fichero para leer datos
-                final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
-
-                escribir = new PrintWriter(new FileWriter(fich2, true));
-                //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
-                //leer la linea) sea distinto de null te haga el if
-                while ((line = reader.readLine()) != null) {
-                    String salvadas = line;
-                    String[] lineaSeparada;
-                    String[] dineroSeparado;
-                    
-                    if (com.david.libreria.ValorBilletes.dineroIngresar(credito) == true) {
-                        if (line.contains(usuario) == false && line.contains(nombreTrans) == false) {
-                            escribir.println(salvadas);
-                        }
-
-                        //Separamos la linea por comas
-                        lineaSeparada = salvadas.split("\\s*,\\s*");
-                        //Añadimos el saldo a un string
-                        String saldo = lineaSeparada[3];
-                        //Separamos la palabra saldo del dinero en si
-                        dineroSeparado = saldo.split("\\s*:\\s*");
-                        if (line.contains(nombreTrans) == true) {
-                            int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
-                            dineroSeparado[1] = String.valueOf(dinero);
-                            salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
-                            escribir.println(salvadas);
-                        }
-                        if (line.contains(usuario) == true) {
-                            int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
-                            dineroSeparado[1] = String.valueOf(dinero);
-                            salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
-                            escribir.println(salvadas);
-                        }
+                //Si nombreTransferencia es distinto al usuario, puede transferir el dinero. 
+                //No se puede transferir dinero a uno mismo.
+                if(nombreTrans.equals(usuario)){
+                    while(nombreTrans.equals(usuario)){
+                        nombreTrans=(String)JOptionPane.showInputDialog(null,"La transferencia debe ser a otro usuario.","Usuario",0,iconUsuIncorrecto,null,null);
                     }
                 }
+                
+
+                    //En la variable credito parseamos la cantidad de dinero que queremos transferir
+                    int credito = Integer.parseInt(completo);
+
+                    //Creamos un buffer del fichero para leer datos
+                    final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+
+                    escribir = new PrintWriter(new FileWriter(fich2, true));
+                    //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
+                    //leer la linea) sea distinto de null te haga el if
+                    while ((line = reader.readLine()) != null) {
+                        String salvadas = line;
+                        String[] lineaSeparada;
+                        String[] dineroSeparado;
+
+                        if (com.david.libreria.ValorBilletes.dineroIngresar(credito) == true) {
+                            if (line.contains(usuario) == false && line.contains(nombreTrans) == false) {
+                                escribir.println(salvadas);
+                            }
+
+                            //Separamos la linea por comas
+                            lineaSeparada = salvadas.split("\\s*,\\s*");
+                            //Añadimos el saldo a un string
+                            String saldo = lineaSeparada[3];
+                            //Separamos la palabra saldo del dinero en si
+                            dineroSeparado = saldo.split("\\s*:\\s*");
+                            if (line.contains(nombreTrans) == true) {
+                                int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
+                                dineroSeparado[1] = String.valueOf(dinero);
+                                salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                                escribir.println(salvadas);
+                            }
+                            if (line.contains(usuario) == true) {
+                                int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
+                                dineroSeparado[1] = String.valueOf(dinero);
+                                salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                                escribir.println(salvadas);
+                            }
+                        }
+                    }
+                
                 reader.close();
                 escribir.close();
                 fich.delete();
