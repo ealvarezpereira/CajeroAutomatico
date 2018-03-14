@@ -17,7 +17,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -44,7 +43,7 @@ public class Cajero {
     Icon iconPassIncorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/contraseña-incorrecta.png"));
     Icon iconUsuIncorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/usuario-incorrecto.png"));
     Icon iconError = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/incorrecto.png"));
-    
+    Icon iconGato = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/gato.png"));
 
     public void cuerpoDelCajero() {
 
@@ -84,7 +83,7 @@ public class Cajero {
 
         //Si el usuario o la contraseña son valores en blanco o nulos que no permita continuar
         if (usuario.isEmpty() || ctra.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "El intento de conexión no fue correcto.","Incio sesión",JOptionPane.INFORMATION_MESSAGE,iconError);
+            JOptionPane.showMessageDialog(null, "El intento de conexión no fue correcto.", "Incio sesión", JOptionPane.INFORMATION_MESSAGE, iconError);
             Display.txtCtra.setText(null);
         } else {
 
@@ -102,7 +101,7 @@ public class Cajero {
 
                         //La marca valido es para que si encuentra un usuario salte la marca
                         valido = true;
-                        JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!","Sesión inciada",JOptionPane.INFORMATION_MESSAGE,iconCorrecto);
+                        JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente!", "Sesión inciada", JOptionPane.INFORMATION_MESSAGE, iconCorrecto);
                         Display.txtCtra.setText(null);
                         cuerpoDelCajero();
 
@@ -112,7 +111,7 @@ public class Cajero {
 
                 //Si no ha entrado en el if es que no existe el usuario
                 if (valido == false) {
-                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "ERROR", JOptionPane.INFORMATION_MESSAGE, iconError);
                     //Con esto borramos el contenido del campo contraseña
                     Display.txtCtra.setText(null);
                 }
@@ -178,11 +177,11 @@ public class Cajero {
             String line = "";
 
             while ((line = leer.readLine()) != null) {
-                if (line.contains(usu) == true) {
-                    usu = (String) JOptionPane.showInputDialog(null,"Usuario existente.","Usuario",0,iconUsuIncorrecto,null,null);
+                while (line.contains(usu) == true) {
+                    usu = (String) JOptionPane.showInputDialog(null, "Usuario existente.", "Usuario", 0, iconUsuIncorrecto, null, null);
                 }
             }
-            
+
             leer.close();
 
         } catch (FileNotFoundException ex) {
@@ -193,7 +192,7 @@ public class Cajero {
 
         String ctra = (String) JOptionPane.showInputDialog(null, "Contraseña", "Contraseña", 0, iconContraseña, null, null);
 
-        while (ctra.equals("") || ctra == null) {
+        while (ctra.equals("")) {
             ctra = (String) JOptionPane.showInputDialog(null, "Contraseña inválida.", "Contraseña", 0, iconPassIncorrecto, null, null);
 
         }
@@ -294,7 +293,7 @@ public class Cajero {
                                 escribir.println(salvadas);
                                 salvadas = "";
                                 saldo = "";
-                                JOptionPane.showMessageDialog(null, "Saldo insuficiente en la cuenta.");
+                                JOptionPane.showMessageDialog(null, "Saldo insuficiente en la cuenta.", "ERROR", JOptionPane.INFORMATION_MESSAGE, iconError);
 
                             } else {
                                 int dinero = Integer.parseInt(saldoSeparado[1]) - credito;
@@ -358,7 +357,7 @@ public class Cajero {
             while ((line = reader.readLine()) != null) {
                 if (line.contains(usuario) == true) {
                     String[] lista = line.split("\\s*,\\s*");
-                    JOptionPane.showMessageDialog(null, "Usuario: " + usuario + ", " + lista[3],"SALDO",JOptionPane.INFORMATION_MESSAGE,iconSaldo);
+                    JOptionPane.showMessageDialog(null, "Usuario: " + usuario + ", " + lista[3], "SALDO", JOptionPane.INFORMATION_MESSAGE, iconSaldo);
                     break;
                 }
             }
@@ -381,7 +380,6 @@ public class Cajero {
             String usuario = objDisplay.getUsuario();
 
             //Pedimos la contraseña del usuario y si no es igual no hace nada.
-
             String ctra = (String) JOptionPane.showInputDialog(null, "Introduce la contraseña", "Contraseña", 0, iconContraseña, null, null);
 
             if (ctra.equals(objDisplay.getCtra())) {
@@ -390,45 +388,49 @@ public class Cajero {
                 String nombreTrans = (String) JOptionPane.showInputDialog(null, "Introducir el nombre del usuario: ", "Transferencia", 0, iconUsuario, null, null);
                 //Si nombreTransferencia es distinto al usuario, puede transferir el dinero. 
                 //No se puede transferir dinero a uno mismo.
-                if(nombreTrans.equals(usuario)){
-                    while(nombreTrans.equals(usuario)){
-                        nombreTrans=(String)JOptionPane.showInputDialog(null,"La transferencia debe ser a otro usuario.","Usuario",0,iconUsuIncorrecto,null,null);
+                if (nombreTrans.equals(usuario)) {
+                    while (nombreTrans.equals(usuario)) {
+                        nombreTrans = (String) JOptionPane.showInputDialog(null, "La transferencia debe ser a otro usuario.", "Usuario", 0, iconUsuIncorrecto, null, null);
                     }
                 }
-                
 
-                    //En la variable credito parseamos la cantidad de dinero que queremos transferir
-                    int credito = Integer.parseInt(completo);
+                //En la variable credito parseamos la cantidad de dinero que queremos transferir
+                int credito = Integer.parseInt(completo);
 
-                    //Creamos un buffer del fichero para leer datos
-                    final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+                //Creamos un buffer del fichero para leer datos
+                final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
 
-                    escribir = new PrintWriter(new FileWriter(fich2, true));
-                    //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
-                    //leer la linea) sea distinto de null te haga el if
-                    while ((line = reader.readLine()) != null) {
-                        String salvadas = line;
-                        String[] lineaSeparada;
-                        String[] dineroSeparado;
+                escribir = new PrintWriter(new FileWriter(fich2, true));
+                //Mietras que la linea que le metes el valor reader.readLine() (que lo que hace es
+                //leer la linea) sea distinto de null te haga el if
+                while ((line = reader.readLine()) != null) {
+                    String salvadas = line;
+                    String[] lineaSeparada;
+                    String[] dineroSeparado;
 
-                        if (com.david.libreria.ValorBilletes.dineroIngresar(credito) == true) {
-                            if (line.contains(usuario) == false && line.contains(nombreTrans) == false) {
-                                escribir.println(salvadas);
-                            }
+                    if (com.david.libreria.ValorBilletes.dineroIngresar(credito) == true) {
+                        if (line.contains(usuario) == false && line.contains(nombreTrans) == false) {
+                            escribir.println(salvadas);
+                        }
 
-                            //Separamos la linea por comas
-                            lineaSeparada = salvadas.split("\\s*,\\s*");
-                            //Añadimos el saldo a un string
-                            String saldo = lineaSeparada[3];
-                            //Separamos la palabra saldo del dinero en si
-                            dineroSeparado = saldo.split("\\s*:\\s*");
-                            if (line.contains(nombreTrans) == true) {
-                                int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
-                                dineroSeparado[1] = String.valueOf(dinero);
+                        //Separamos la linea por comas
+                        lineaSeparada = salvadas.split("\\s*,\\s*");
+                        //Añadimos el saldo a un string
+                        String saldo = lineaSeparada[3];
+                        //Separamos la palabra saldo del dinero en si
+                        dineroSeparado = saldo.split("\\s*:\\s*");
+                        if (line.contains(nombreTrans) == true) {
+                            int dinero = Integer.parseInt(dineroSeparado[1]) + credito;
+                            dineroSeparado[1] = String.valueOf(dinero);
+                            salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
+                            escribir.println(salvadas);
+                        }
+                        if (line.contains(usuario) == true) {
+                            if (Integer.parseInt(dineroSeparado[1]) < credito) {
+                                JOptionPane.showMessageDialog(null, "Saldo insuficiente.", "ERROR", JOptionPane.INFORMATION_MESSAGE, iconError);
                                 salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
                                 escribir.println(salvadas);
-                            }
-                            if (line.contains(usuario) == true) {
+                            } else {
                                 int dinero = Integer.parseInt(dineroSeparado[1]) - credito;
                                 dineroSeparado[1] = String.valueOf(dinero);
                                 salvadas = lineaSeparada[0] + ", " + lineaSeparada[1] + ", " + lineaSeparada[2] + ", " + dineroSeparado[0] + ": " + dineroSeparado[1];
@@ -436,7 +438,8 @@ public class Cajero {
                             }
                         }
                     }
-                
+                }
+
                 reader.close();
                 escribir.close();
                 fich.delete();
@@ -466,30 +469,37 @@ public class Cajero {
         fich = new File("cajero.txt");
         fich2 = new File("cajero2.txt");
         try {
-            objDisplay = new Display();
-            //Aqui pedimos el usuario
-            String usuario = objDisplay.getUsuario();
-            //Buffer para ler o ficheiro
-            final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
-            escribir = new PrintWriter(new FileWriter(fich2, true));
-            //Mientras la linea que le metes el valor reader.readLine(), sea distinto a null. Ejecuta el if.
-            while ((line = reader.readLine()) != null) {
-                if (line.contains(usuario) == false) {
-                    escribir.println(line);
-                }
-            }
-            reader.close();
-            escribir.close();
-            fich.delete();
-            //Renombramos el fichero. Esto es una prueba para ver si lo renombra o no.
-            boolean correcto = fich2.renameTo(fich);
-            if (correcto) {
-                System.out.println("Fichero renombrado, Operacion completada.");
-            } else {
-                System.out.println("fichero no renombrado");
-            }
 
-            JOptionPane.showMessageDialog(null, "Cuenta eliminada correctamente.");
+            if (JOptionPane.showConfirmDialog(null, "Estás seguro de que quieres eliminar la cuenta?", "WARNING",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                
+                objDisplay = new Display();
+                //Aqui pedimos el usuario
+                String usuario = objDisplay.getUsuario();
+                //Buffer para ler o ficheiro
+                final BufferedReader reader = new BufferedReader(new FileReader("cajero.txt"));
+                escribir = new PrintWriter(new FileWriter(fich2, true));
+                //Mientras la linea que le metes el valor reader.readLine(), sea distinto a null. Ejecuta el if.
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains(usuario) == false) {
+                        escribir.println(line);
+                    }
+                }
+                reader.close();
+                escribir.close();
+                fich.delete();
+                //Renombramos el fichero. Esto es una prueba para ver si lo renombra o no.
+                boolean correcto = fich2.renameTo(fich);
+                if (correcto) {
+                    System.out.println("Fichero renombrado, Operacion completada.");
+                } else {
+                    System.out.println("fichero no renombrado");
+                }
+
+                JOptionPane.showMessageDialog(null, "Cuenta eliminada correctamente.");
+            } else {
+                JOptionPane.showConfirmDialog(null, iconGato, "Grasias.", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            }
 
         } catch (FileNotFoundException ex) {
             System.out.println("Error " + ex);
