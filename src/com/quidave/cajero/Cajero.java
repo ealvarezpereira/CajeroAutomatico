@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 public class Cajero {
 
     File fich;
+    File urlImg;
     private String line = "";
     private boolean valido = false;
     private PrintWriter escribir;
@@ -36,14 +37,14 @@ public class Cajero {
     Display objDisplay;
 
     //ICONOS DE JOptionPane:
-    Icon iconSaldo = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/mostrar-dinero.png"));
-    Icon iconUsuario = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/usuario.png"));
-    Icon iconContraseña = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/contraseña.png"));
-    Icon iconCorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/correcto.png"));
-    Icon iconPassIncorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/contraseña-incorrecta.png"));
-    Icon iconUsuIncorrecto = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/usuario-incorrecto.png"));
-    Icon iconError = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/incorrecto.png"));
-    Icon iconGato = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/gato.png"));
+    Icon iconSaldo = new javax.swing.ImageIcon((urlImg= new File("src/com/cajero/imagenes/mostrar-dinero.png")).getAbsolutePath());
+    Icon iconUsuario = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/usuario.png")).getAbsolutePath());
+    Icon iconContraseña = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/contraseña.png")).getAbsolutePath());
+    Icon iconCorrecto = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/correcto.png")).getAbsolutePath());
+    Icon iconPassIncorrecto = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/contraseña-incorrecta.png")).getAbsolutePath());
+    Icon iconUsuIncorrecto = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/usuario-incorrecto.png")).getAbsolutePath());
+    Icon iconError = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/incorrecto.png")).getAbsolutePath());
+    Icon iconGato = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/gato.png")).getAbsolutePath());
 
     public void cuerpoDelCajero() {
 
@@ -55,13 +56,7 @@ public class Cajero {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ElegirOpcion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
