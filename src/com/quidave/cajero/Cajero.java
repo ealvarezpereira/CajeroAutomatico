@@ -37,7 +37,7 @@ public class Cajero {
     Display objDisplay;
 
     //ICONOS DE JOptionPane:
-    Icon iconSaldo = new javax.swing.ImageIcon((urlImg= new File("src/com/cajero/imagenes/mostrar-dinero.png")).getAbsolutePath());
+    Icon iconSaldo = new javax.swing.ImageIcon((urlImg= new File("src/com/cajero/imagenes/Mostrar-dinero.png")).getAbsolutePath());
     Icon iconUsuario = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/usuario.png")).getAbsolutePath());
     Icon iconContraseña = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/contraseña.png")).getAbsolutePath());
     Icon iconCorrecto = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/correcto.png")).getAbsolutePath());
