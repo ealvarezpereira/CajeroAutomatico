@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,6 +26,7 @@ import javax.swing.JTextField;
 public class Display extends JFrame implements ActionListener {
 
     private static String usuario, ctra;
+    File urlImg;
 
     Cajero caj = new Cajero();
 
@@ -37,7 +39,7 @@ public class Display extends JFrame implements ActionListener {
     public JLabel lblUsuario = new JLabel("Usuario : ");
     public JLabel lblCtra = new JLabel("Contraseña : ");
 
-    ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/com/cajero/imagenes/error.png"));
+    ImageIcon icon = new javax.swing.ImageIcon((urlImg = new File("src/com/cajero/imagenes/error.png")).getAbsolutePath());
 
     JLabel lblIcono = new JLabel();
     JLabel lblIcono2 = new JLabel();
