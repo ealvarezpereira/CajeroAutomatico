@@ -101,11 +101,6 @@ public class ElegirOpcion extends javax.swing.JFrame {
         });
 
         Opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Introducir dinero", "Sacar dinero", "Darse de baja", "Transferencia bancaria", "Mostrar saldo" }));
-        Opciones.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OpcionesActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -147,13 +142,7 @@ public class ElegirOpcion extends javax.swing.JFrame {
         cancelar();
     }//GEN-LAST:event_cancelarActionPerformed
 
-    private void OpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpcionesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_OpcionesActionPerformed
-
-    public void botonesActionPerformed(java.awt.event.ActionEvent evt) {
-
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox<String> Opciones;
@@ -195,7 +184,7 @@ public class ElegirOpcion extends javax.swing.JFrame {
         } else if (jopcion.getSelectedIndex() == 4) {
             caj.mostrarSaldo();
         } else {
-            IntroducirDinero bot = new IntroducirDinero();
+            OperacionesCajero bot = new OperacionesCajero();
             bot.setVisible(true);
             setVisible(false);
         }
