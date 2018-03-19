@@ -103,11 +103,13 @@ public class Display extends JFrame implements ActionListener {
 
         txtUsuario.setBackground(Color.white);
         this.lblIcono.removeAll();
+        this.lblIcono.setIcon(null);
     }
 
     public void ctraMouseClicked(java.awt.event.MouseEvent evt) {
         txtCtra.setBackground(Color.white);
         this.lblIcono2.removeAll();
+        this.lblIcono2.setIcon(null);
     }
 
     @Override
