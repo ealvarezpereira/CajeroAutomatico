@@ -493,7 +493,7 @@ public class Cajero {
 
                 JOptionPane.showMessageDialog(null, "Cuenta eliminada correctamente.");
             } else {
-                JOptionPane.showConfirmDialog(null, iconGato, "Grasias.", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showConfirmDialog(null, iconGato, "Nos alegramos de que te quedes!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             }
 
         } catch (FileNotFoundException ex) {
